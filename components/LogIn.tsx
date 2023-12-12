@@ -51,8 +51,8 @@ function Login() {
 
   // Generate JSX code for error message
   const renderErrorMessage = (name: string) =>
-    name === errorMessages.name && (
-      <div className="error">{errorMessages.message}</div>
+    name === errorMessages && (
+      <div className="error">{errorMessages}</div>
     );
 
   // JSX code for login form
