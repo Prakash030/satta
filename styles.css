@@ -33,6 +33,20 @@
     color: #fff;
     padding: 10px 20px;
   }
+
+  input[type="reset"] {
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    background: #01d28e;
+    border: 1px solid #01d28e;
+    color: #fff;
+    padding: 10px 20px;
+  }
+
+  input[type="reset"]:hover {
+    background: #6cf0c2;
+  }
   
   input[type="submit"]:hover {
     background: #6cf0c2;
@@ -54,6 +68,20 @@
   .list-container {
     display: flex;
   }
+  .text{
+    color: red;
+  }
+  .wallet{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .number{
+    color: green;
+    text-decoration: underline;
+    font-size: 1.5rem;
+  }
   
   .error {
     color: red;
@@ -73,6 +101,13 @@
     font-family: serif;
     padding: 0%;
     margin: 0%;
+    margin-top: 5%;
+    font-weight: 600;
+    color:rgb(60, 58, 58);
+  }
+  .linkDecor{
+    margin-left: 2%;
+    color: red;
   }
   
   .input-container {
@@ -170,3 +205,54 @@
     font-size: large;
 
   }
+
+  /* TablePage.css */
+
+.custom-table {
+  border-collapse: collapse;
+  width: 100%;
+  padding-right: 5rem;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+@media (max-width: 768px) {
+  .dashboard p, .head, .log{
+    font-size: 0.8rem;
+  }
+  .button{
+    font-size: 0.8rem;
+  }
+  .chartType{
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 400px) {
+  
+  .login-form{
+    width: 200px;
+  }
+
+  .dashboard p, .head, .log{
+    font-size: 0.5rem;
+  }
+  .button{
+    font-size: 0.5rem;
+  }
+  .chartType{
+    font-size: 0.5rem;
+  }
+  .bg{
+    background-color: orange;
+  }
+  .game-list{
+    display: flex;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

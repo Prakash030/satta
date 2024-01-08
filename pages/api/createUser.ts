@@ -15,7 +15,11 @@ export default async function handler(
   try {
     const { name, email,password,phoneNumber } = req.query as { name: string; email: string;password:string;phoneNumber:string; };
     const balance = 0;
-    const user = await createUser({ name, email,balance,password,phoneNumber });
+    const role = "player"
+    const bankDetails = {};
+    const withdrawal: any[] = [];
+    const deposit: any[] = [];
+    const user = await createUser({ name, email,balance,password,phoneNumber,role, bankDetails, withdrawal, deposit });
     res.status(201).json({ success: true, user });
   } catch (error) {
     console.error('Error handling user creation:', error);

@@ -3,6 +3,7 @@ import Link from "next/link";
 import "../styles.css";
 
 function SignIn() {
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
  
     event.preventDefault();
@@ -35,6 +36,8 @@ function SignIn() {
 
 
       console.log("User created successfully!");
+      alert("User created successfully!");
+      setIsSubmitted(true);
     } catch (error) {
       console.error("Error creating user:", error);
     }
@@ -62,6 +65,10 @@ function SignIn() {
         <div className="button-container">
           <input type="submit" />
         </div>
+        <p className="mt-4 text-gray-600 text-center">
+          Already have an account?
+          <Link href="/logIn"> Sign In</Link>
+        </p>
       </form>
     </div>
   );
@@ -71,17 +78,20 @@ function SignIn() {
       <div className="login-form">
         <div className="title">Sign Up</div>
         <p className="description">
-          step into the world of satta matka by loggin into your account today
+          Step into the world of satta matka by loggin into your account today
         </p>
         <p className="description">
           Predict wisely, Join the game, and let the winning journey unlock!!!!!
         </p>
-        {renderForm}
-
-        <p className="mt-4 text-gray-600 text-center">
-          Already have an account?
-          <Link href="/logIn"> Sign In</Link>
-        </p>
+        {isSubmitted ? (
+          <div>
+            User is successfully Created
+            <Link href="/logIn" className="linkDecor"> Sign In</Link>
+          </div>
+        ) : (
+          renderForm
+          
+        )}
       </div>
     </div>
   );

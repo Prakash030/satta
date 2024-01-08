@@ -1,39 +1,136 @@
-import React from 'react'
+import React, { FormEvent, useState } from "react";
 import "../styles.css";
-import { useState } from "react";
+import { parseCookies } from "nookies";
+import { useRouter } from "next/router";
 
-const DoublePatti = () => {
+const SinglePatti = () => {
+  const [openPatti, setOpenPatti] = React.useState("");
+  const [closePatti, setClosePatti] = React.useState("");
 
-  const ank0 = [127,136,145,190,235,280,370,389,460,479,569,678];
-  const ank1 = [128,137,146,236,245,290,380,470,489,560,678,579];
-  const ank2 = [129,138,147,156,237,246,345,390,480,570,589,679];
-  const ank3 = [120,139,148,157,238,247,256,346,490,580,670,689];
-  const ank4 = [130,149,158,167,239,248,257,347,356,590,680,789];
-  const ank5 = [140,159,168,230,249,258,267,348,357,456,690,780];
-  const ank6 = [123,150,169,178,240,259,268,349,358,367,457,790];
-  const ank7 = [124,160,179,250,269,278,340,359,368,458,467,890];
-  const ank8 = [125,134,170,189,260,279,350,369,378,459,468,567];
-  const ank9 = [126,135,180,234,270,289,360,379,450,469,478,568];
+  const router = useRouter();
+  const { gameName, gameType, gameTiming } = router.query;
+  const cookies = parseCookies();
+  const user = cookies.userCredentials
+    ? JSON.parse(cookies.userCredentials)
+    : "";
+  const userEmail = user.email;
 
-  const buttons = [
-    { id: 1, name: "Reset" },
-    { id: 2, name: "Submit" },
-  ];
+  interface FormData {
+    [key: string]: string;
+  }
 
-  const handleSubmit = (name: string) => {
-    if (name === "Reset") {
-      // setIsDisabled(true);
-      window.location.reload();
+  interface GameOdds {
+    [key: string]: number;
+  }
+
+  const gameOdds: GameOdds = {
+    SINGLE_ANK: 9,
+    JODI: 15,
+    SINGLE_PATTI: 90,
+    DOUBLE_PATTI: 300,
+    TRIPPLE_PATTI: 900,
+  };
+
+  const isPlayButtonEnabled = (gameTiming: string): boolean => {
+    const matchResult = gameTiming?.match(
+      /(\d+):(\d+)\s(AM|PM)\sto\s(\d+):(\d+)\s(AM|PM)/i
+    );
+
+    if (!matchResult) {
+      return false;
     }
-    if (name === "Submit") {
-      alert("Bet is placed !!!");
+
+    const [
+      ,
+      startHour,
+      startMinute,
+      startPeriod,
+      endHour,
+      endMinute,
+      endPeriod,
+    ] = matchResult;
+    const isAM = (period: string) => period.toLowerCase() === "am";
+
+    const currentDateTime = new Date();
+
+    const convertTo24HourFormat = (hour: string, period: string) => {
+      let resultHour = parseInt(hour, 10);
+      if (!isAM(period) && resultHour !== 12) {
+        resultHour += 12;
+      }
+      return resultHour;
+    };
+
+    const startTime = new Date();
+    startTime.setHours(
+      convertTo24HourFormat(startHour, startPeriod),
+      parseInt(startMinute, 10),
+      0,
+      0
+    );
+
+    const endTime = new Date();
+    endTime.setHours(
+      convertTo24HourFormat(endHour, endPeriod),
+      parseInt(endMinute, 10),
+      0,
+      0
+    );
+
+    return currentDateTime >= startTime && currentDateTime <= endTime;
+  };
+
+  const isButtonEnabled = isPlayButtonEnabled(gameTiming as string);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData: FormData = {};
+
+    formData["amount"] = String(
+      Number(event.target.openPatti.value ? event.target.openAmount.value : 0) +
+        Number(
+          event.target.closePatti.value ? event.target.closeAmount.value : 0
+        )
+    );
+    formData["digits"] =
+      (openPatti == "" ? "---" : openPatti) +
+      (closePatti == "" ? "---" : closePatti);
+    formData["gameType"] = gameType as string;
+    formData["gameName"] = gameName as string;
+    formData["player"] = userEmail;
+    formData["odds"] = gameOdds[gameType as string].toString();
+
+    try {
+      const queryString = new URLSearchParams(formData).toString();
+
+      console.log("querystring", queryString);
+
+      const response = await fetch(`/api/gameSubmit?${queryString}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to create game");
+      }
+
+      console.log("Game created successfully!");
+      alert("Bidding done!!!");
+    } catch (error) {
+      if ((error as Error)?.message === "Insufficient balance") {
+        alert("Insufficient balance. Please add funds before placing your bid.");
+      } else {
+        console.error("Error:", error.message);
+      }
     }
   };
 
-
-
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <div>
         <div style={{ marginTop: "20px" }}>
           <span
@@ -47,7 +144,7 @@ const DoublePatti = () => {
               color: "white",
             }}
           >
-            Single Ank
+            Single Patti
           </span>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <span
@@ -61,7 +158,7 @@ const DoublePatti = () => {
                 textAlign: "center",
               }}
             >
-              {"formattedTime"}
+              {gameTiming}
             </span>
             <span
               style={{
@@ -74,7 +171,7 @@ const DoublePatti = () => {
                 textAlign: "center",
               }}
             >
-              SRIDEVI
+              {gameName}
             </span>
           </div>
         </div>
@@ -89,63 +186,133 @@ const DoublePatti = () => {
           background: "#333",
         }}
       ></div>
-
-
       <div>
-        <p
-          style={{
-            marginLeft: "45%",
-            fontWeight: "bold",
-            fontSize: "30px",
-            marginBottom: "20px",
-          }}
-        >
-          {" "}
-          Panna of Ank 0{" "}
-        </p>
         <div
           className="AnkCardList"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateColumns: "repeat(2, 1fr)",
             gap: "10px",
+            marginLeft: "350px",
           }}
         >
-          {ank0.map((number) => (
-            <div
-              key={number}
+          <div>
+            <p
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+                fontWeight: "bold",
+                fontSize: "30px",
+                marginBottom: "20px",
               }}
             >
-              <p
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                {" "}
-                {number}
-              </p>
-              <input
-                type="text"
-                style={{
-                  backgroundColor: "#d0d6d1",
-                  borderRadius: "10%",
-                  width: "200px",
-                  padding: "10px",
-                }}
-              ></input>
-            </div>
-          ))}
+              {" "}
+              Open Patti{" "}
+            </p>
+            <input
+              type="text"
+              style={{
+                backgroundColor: "#d0d6d1",
+                borderRadius: "10%",
+                width: "200px",
+                padding: "10px",
+              }}
+              maxLength={3}
+              name="openPatti"
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                const sanitizedValue = inputValue.replace(/[^0-9]/g, "");
+                const prePaddedValue =
+                  sanitizedValue.length < 3
+                    ? `00${sanitizedValue}`.slice(-3)
+                    : sanitizedValue;
+
+                setOpenPatti(prePaddedValue);
+              }}
+            />
+          </div>
+
+          <div>
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "30px",
+                marginBottom: "20px",
+              }}
+            >
+              {" "}
+              Enter Amount{" "}
+            </p>
+            <input
+              type="text"
+              style={{
+                backgroundColor: "#d0d6d1",
+                borderRadius: "10%",
+                width: "200px",
+                padding: "10px",
+              }}
+              name="openAmount"
+              disabled={!openPatti}
+            />
+          </div>
+
+          <div>
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "30px",
+                marginBottom: "20px",
+              }}
+            >
+              {" "}
+              Close Patti{" "}
+            </p>
+            <input
+              type="text"
+              style={{
+                backgroundColor: "#d0d6d1",
+                borderRadius: "10%",
+                width: "200px",
+                padding: "10px",
+              }}
+              maxLength={3}
+              name="closePatti"
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                const sanitizedValue = inputValue.replace(/[^0-9]/g, "");
+                const prePaddedValue =
+                  sanitizedValue.length < 3
+                    ? `00${sanitizedValue}`.slice(-3)
+                    : sanitizedValue;
+
+                setClosePatti(prePaddedValue);
+              }}
+            />
+          </div>
+
+          <div>
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "30px",
+                marginBottom: "20px",
+              }}
+            >
+              {" "}
+              Enter Amount{" "}
+            </p>
+            <input
+              type="text"
+              style={{
+                backgroundColor: "#d0d6d1",
+                borderRadius: "10%",
+                width: "200px",
+                padding: "10px",
+              }}
+              name="closeAmount"
+              disabled={!closePatti}
+            />
+          </div>
         </div>
       </div>
-
-
-
       <div
         className="hrStyle"
         style={{
@@ -157,645 +324,6 @@ const DoublePatti = () => {
         }}
       ></div>
 
-
-
-
-
-
-
-      <div>
-        <p
-          style={{
-            marginLeft: "45%",
-            fontWeight: "bold",
-            fontSize: "30px",
-            marginBottom: "20px",
-          }}
-        >
-          {" "}
-          Panna of Ank 1{" "}
-        </p>
-        <div
-          className="AnkCardList"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {ank1.map((number) => (
-            <div
-              key={number}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                {" "}
-                {number}
-              </p>
-              <input
-                type="text"
-                style={{
-                  backgroundColor: "#d0d6d1",
-                  borderRadius: "10%",
-                  width: "200px",
-                  padding: "10px",
-                }}
-              ></input>
-            </div>
-          ))}
-        </div>
-      </div>
-
-
-
-      <div
-        className="hrStyle"
-        style={{
-          marginTop: "50px",
-          marginBottom: "50px",
-          height: "2px",
-          width: "100%",
-          background: "#333",
-        }}
-      ></div>
-
-
-
-
-
-
-      <div>
-        <p
-          style={{
-            marginLeft: "45%",
-            fontWeight: "bold",
-            fontSize: "30px",
-            marginBottom: "20px",
-          }}
-        >
-          {" "}
-          Panna of Ank 2{" "}
-        </p>
-        <div
-          className="AnkCardList"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {ank2.map((number) => (
-            <div
-              key={number}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                {" "}
-                {number}
-              </p>
-              <input
-                type="text"
-                style={{
-                  backgroundColor: "#d0d6d1",
-                  borderRadius: "10%",
-                  width: "200px",
-                  padding: "10px",
-                }}
-              ></input>
-            </div>
-          ))}
-        </div>
-      </div>
-
-
-
-      <div
-        className="hrStyle"
-        style={{
-          marginTop: "50px",
-          marginBottom: "50px",
-          height: "2px",
-          width: "100%",
-          background: "#333",
-        }}
-      ></div>
-
-
-
-
-
-
-
-      <div>
-        <p
-          style={{
-            marginLeft: "45%",
-            fontWeight: "bold",
-            fontSize: "30px",
-            marginBottom: "20px",
-          }}
-        >
-          {" "}
-          Panna of Ank 3{" "}
-        </p>
-        <div
-          className="AnkCardList"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {ank3.map((number) => (
-            <div
-              key={number}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                {" "}
-                {number}
-              </p>
-              <input
-                type="text"
-                style={{
-                  backgroundColor: "#d0d6d1",
-                  borderRadius: "10%",
-                  width: "200px",
-                  padding: "10px",
-                }}
-              ></input>
-            </div>
-          ))}
-        </div>
-      </div>
-
-
-      <div
-        className="hrStyle"
-        style={{
-          marginTop: "50px",
-          marginBottom: "50px",
-          height: "2px",
-          width: "100%",
-          background: "#333",
-        }}
-      ></div>
-
-
-
-
-
-      <div>
-        <p
-          style={{
-            marginLeft: "45%",
-            fontWeight: "bold",
-            fontSize: "30px",
-            marginBottom: "20px",
-          }}
-        >
-          {" "}
-          Panna of Ank 4{" "}
-        </p>
-        <div
-          className="AnkCardList"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {ank4.map((number) => (
-            <div
-              key={number}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                {" "}
-                {number}
-              </p>
-              <input
-                type="text"
-                style={{
-                  backgroundColor: "#d0d6d1",
-                  borderRadius: "10%",
-                  width: "200px",
-                  padding: "10px",
-                }}
-              ></input>
-            </div>
-          ))}
-        </div>
-      </div>
-
-
-
-      <div
-        className="hrStyle"
-        style={{
-          marginTop: "50px",
-          marginBottom: "50px",
-          height: "2px",
-          width: "100%",
-          background: "#333",
-        }}
-      ></div>
-
-
-
-
-
-      <div>
-        <p
-          style={{
-            marginLeft: "45%",
-            fontWeight: "bold",
-            fontSize: "30px",
-            marginBottom: "20px",
-          }}
-        >
-          {" "}
-          Panna of Ank 5{" "}
-        </p>
-        <div
-          className="AnkCardList"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {ank5.map((number) => (
-            <div
-              key={number}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                {" "}
-                {number}
-              </p>
-              <input
-                type="text"
-                style={{
-                  backgroundColor: "#d0d6d1",
-                  borderRadius: "10%",
-                  width: "200px",
-                  padding: "10px",
-                }}
-              ></input>
-            </div>
-          ))}
-        </div>
-      </div>
-
-
-
-      <div
-        className="hrStyle"
-        style={{
-          marginTop: "50px",
-          marginBottom: "50px",
-          height: "2px",
-          width: "100%",
-          background: "#333",
-        }}
-      ></div>
-
-
-
-
-
-      <div>
-        <p
-          style={{
-            marginLeft: "45%",
-            fontWeight: "bold",
-            fontSize: "30px",
-            marginBottom: "20px",
-          }}
-        >
-          {" "}
-          Panna of Ank 6{" "}
-        </p>
-        <div
-          className="AnkCardList"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {ank6.map((number) => (
-            <div
-              key={number}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                {" "}
-                {number}
-              </p>
-              <input
-                type="text"
-                style={{
-                  backgroundColor: "#d0d6d1",
-                  borderRadius: "10%",
-                  width: "200px",
-                  padding: "10px",
-                }}
-              ></input>
-            </div>
-          ))}
-        </div>
-      </div>
-
-
-
-      <div
-        className="hrStyle"
-        style={{
-          marginTop: "50px",
-          marginBottom: "50px",
-          height: "2px",
-          width: "100%",
-          background: "#333",
-        }}
-      ></div>
-
-
-
-
-
-      <div>
-        <p
-          style={{
-            marginLeft: "45%",
-            fontWeight: "bold",
-            fontSize: "30px",
-            marginBottom: "20px",
-          }}
-        >
-          {" "}
-          Panna of Ank 7{" "}
-        </p>
-        <div
-          className="AnkCardList"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {ank7.map((number) => (
-            <div
-              key={number}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                {" "}
-                {number}
-              </p>
-              <input
-                type="text"
-                style={{
-                  backgroundColor: "#d0d6d1",
-                  borderRadius: "10%",
-                  width: "200px",
-                  padding: "10px",
-                }}
-              ></input>
-            </div>
-          ))}
-        </div>
-      </div>
-
-
-
-      <div
-        className="hrStyle"
-        style={{
-          marginTop: "50px",
-          marginBottom: "50px",
-          height: "2px",
-          width: "100%",
-          background: "#333",
-        }}
-      ></div>
-
-
-
-
-
-      <div>
-        <p
-          style={{
-            marginLeft: "45%",
-            fontWeight: "bold",
-            fontSize: "30px",
-            marginBottom: "20px",
-          }}
-        >
-          {" "}
-          Panna of Ank 8{" "}
-        </p>
-        <div
-          className="AnkCardList"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {ank8.map((number) => (
-            <div
-              key={number}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                {" "}
-                {number}
-              </p>
-              <input
-                type="text"
-                style={{
-                  backgroundColor: "#d0d6d1",
-                  borderRadius: "10%",
-                  width: "200px",
-                  padding: "10px",
-                }}
-              ></input>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div
-        className="hrStyle"
-        style={{
-          marginTop: "50px",
-          marginBottom: "50px",
-          height: "2px",
-          width: "100%",
-          background: "#333",
-        }}
-      ></div>
-
-
-
-
-      <div>
-        <p
-          style={{
-            marginLeft: "45%",
-            fontWeight: "bold",
-            fontSize: "30px",
-            marginBottom: "20px",
-          }}
-        >
-          {" "}
-          Panna of Ank 9{" "}
-        </p>
-        <div
-          className="AnkCardList"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {ank9.map((number) => (
-            <div
-              key={number}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                {" "}
-                {number}
-              </p>
-              <input
-                type="text"
-                style={{
-                  backgroundColor: "#d0d6d1",
-                  borderRadius: "10%",
-                  width: "200px",
-                  padding: "10px",
-                }}
-              ></input>
-            </div>
-          ))}
-        </div>
-      </div>
-
-
-
-
-
-
-
-
-
-
-
-
-      <div
-        className="hrStyle"
-        style={{
-          marginTop: "50px",
-          marginBottom: "50px",
-          height: "2px",
-          width: "100%",
-          background: "#333",
-        }}
-      ></div>
       <div
         style={{
           display: "flex",
@@ -804,23 +332,15 @@ const DoublePatti = () => {
           marginTop: "50px",
         }}
       >
-        {/* flex-wrap: "wrap";
-        justify-content: "space-around";
-        margin-top: "50px"; */}
-        {buttons.map((item) => {
-          return (
-            <button
-              key={item.id}
-              className="ankbuttonpair"
-              onClick={() => handleSubmit(item.name)}
-            >
-              {item.name}
-            </button>
-          );
-        })}
+        <div>
+          <input type="reset" />
+        </div>
+        <div>
+          <input type="submit" disabled={!isButtonEnabled} />
+        </div>
       </div>
-    </div>
+    </form>
   );
 };
 
-export default DoublePatti
+export default SinglePatti;

@@ -1,49 +1,60 @@
 // pages/GameList.js
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import GameCard from "@/components/GameCard";
 import "../styles.css";
+import { useRouter } from 'next/router';
+import "../styles.css";
 
-const games = [
-  { id: 1, name: "/SingleAnk", imageUrl: "/singleAnk.jpeg" },
-  { id: 2, name: "/Jodi", imageUrl: "/jodi.jpeg" },
-  { id: 3, name: "/SinglePatti", imageUrl: "/singlePatti.jpeg" },
-  // Add more games as needed
-];
-const games2 = [
-  { id: 1, name: "/DoublePatti", imageUrl: "/doublePatti.jpeg" },
-  { id: 2, name: "/TripplePatti", imageUrl: "/tripplePatti.jpeg" },
-  { id: 3, name: "/HalfSangam", imageUrl: "/halfSangam.jpeg" },
-  // Add more games as needed
-];
+
+
+
 
 const GameList = () => {
+
+  const router = useRouter();
+  const { gameName,gameTiming } = router.query;
+
+  const games = [
+    { id: 1, name: `/SingleAnk?gameName=${gameName}&gameType=SINGLE_ANK&gameTiming=${gameTiming}`, imageUrl: "/singleAnk.jpeg" },
+    { id: 2, name: `/Jodi?gameName=${gameName}&gameType=JODI&gameTiming=${gameTiming}`, imageUrl: "/jodi.jpeg" },
+
+  ];
+  const games2 = [
+    { id: 1, name: `/SinglePatti?gameName=${gameName}&gameType=SINGLE_PATTI&gameTiming=${gameTiming}`, imageUrl: "/singlePatti.jpeg" },
+    { id: 2, name: `/DoublePatti?gameName=${gameName}&gameType=DOUBLE_PATTI&gameTiming=${gameTiming}`, imageUrl: "/doublePatti.jpeg" },
+    { id: 3, name: `/TripplePatti?gameName=${gameName}&gameType=TRIPPLE_PATTI&gameTiming=${gameTiming}`, imageUrl: "/tripplePatti.jpeg" },
+   
+  ];
+
   return (
-    <div className="container mx-auto my-8">
+    <div className="container mx-auto my-8 .text">
       <h1 className="text-4xl font-bold mb-4">
         <span
           style={{
             backgroundColor: "yellow",
             padding: "10px",
             borderRadius: "20%",
-            marginLeft: "40%",
+            textAlign: "center",
+            display: "flex",
+            justifyContent: "center",
             fontWeight: "bold",
-            fontSize: "30px",
+            fontSize: "1.5rem",
             color: "black",
           }}
         >
           Select Bidding Option Here
         </span>
       </h1>
-      <div className="game-list">
+      <div className="game-list" style={{marginTop:"100px",marginLeft:"300px",marginRight:"300px"}}>
         {games.map((game) => (
           // <GameCard key={game.id} game={game} />
           <Link href={game.name} key={game.id}>
             <Image
-              width={100}
-              height={100}
+              width={200}
+              height={200}
               src={game.imageUrl}
               alt={game.name}
               className="w-full h-32 object-cover mb-2 rounded-md"
@@ -51,12 +62,12 @@ const GameList = () => {
           </Link>
         ))}
       </div>
-      <div className="game-list">
+      <div className="game-list" style={{marginTop:"100px"}}>
         {games2.map((game) => (
           <Link href={game.name} key={game.id}>
             <Image
-              width={100}
-              height={100}
+              width={200}
+              height={200}
               src={game.imageUrl}
               alt={game.name}
               className="w-full h-32 object-cover mb-2 rounded-md"
@@ -67,19 +78,6 @@ const GameList = () => {
         
       </div >
 
-
-
-      <div style={{marginTop:"50px"}}>
-      <Link href="/FullSangam" style={{marginLeft:"47.5%"}}>
-          <Image
-            width={100}
-            height={100}
-            src="/fullSangam.jpeg"
-            alt="fullsangam"
-            className="w-full h-32 object-cover mb-2 rounded-md"
-          />
-        </Link>
-      </div>
     </div>
   );
 };

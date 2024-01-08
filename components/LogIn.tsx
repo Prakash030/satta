@@ -1,58 +1,57 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
-
-import "../styles.css"
 import Link from "next/link";
 
+import "../styles.css";
+interface ErrorMessages {
+  name: string;
+  message: string;
+}
+
 function Login() {
-  // React States
-  const [errorMessages, setErrorMessages] = useState({});
+
+  const [errorMessages, setErrorMessages] = useState<ErrorMessages>({
+    name: "",
+    message: "",
+  });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // User Login info
-  const database = [
-    {
-      username: "user1",
-      password: "pass1"
-    },
-    {
-      username: "user2",
-      password: "pass2"
-    }
-  ];
-
-  const errors = {
-    uname: "invalid username",
-    pass: "invalid password"
-  };
-
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
-    //Prevent page reload
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    var { uname, pass } = document.forms[0];
+    const formData = new FormData(event.currentTarget);
+    const uname = formData.get("uname") as string;
+    const pass = formData.get("pass") as string;
 
-    // Find user login info
-    const userData = database.find((user) => user.username === uname.value);
+    try {
+      const response = await fetch("/api/authUser", {
+        method: "POST",
+        body: new URLSearchParams({ email: uname, password: pass }), // Use URLSearchParams for form data
+      });
 
-    // Compare user info
-    if (userData) {
-      if (userData.password !== pass.value) {
-        // Invalid password
-        setErrorMessages({ name: "pass", message: errors.pass });
-      } else {
-        setIsSubmitted(true);
+      console.log("response", response);
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to authenticate user");
       }
-    } else {
-      // Username not found
-      setErrorMessages({ name: "uname", message: errors.uname });
+
+      const userData = await response.json();
+
+      if (userData) {
+        setIsSubmitted(true);
+      } else {
+        setErrorMessages({ name: "uname", message: "Invalid username or password" });
+      }
+    } catch (error) {
+      console.error("Error authenticating user:", error);
+      setErrorMessages({ name: "uname", message: "Error authenticating user" });
     }
   };
 
   // Generate JSX code for error message
   const renderErrorMessage = (name: string) =>
-    name === errorMessages && (
-      <div className="error">{errorMessages}</div>
+    name === errorMessages.name && (
+      <div className="error">{errorMessages.message}</div>
     );
 
   // JSX code for login form
@@ -74,9 +73,9 @@ function Login() {
         </div>
 
         <p className="mt-4 text-gray-600 text-center">
-           Dont have an account? 
-           <Link href="/signIn" >   Sign Up</Link>
-         </p>
+          Dont have an account?
+          <Link href="/signIn"> Sign Up</Link>
+        </p>
       </form>
     </div>
   );
@@ -84,14 +83,18 @@ function Login() {
   return (
     <div className="app">
       <div className="login-form">
-        
         <div className="title">Log In your Account</div>
-        <p className="description">Step into the world of satta matka by loggin into your account today</p>
-        <p className="description">Predict wisely,Join the game,and let the winning journey unlock!!!!!</p>
+        <p className="description">Step into the world of satta matka by logging into your account today</p>
+        <p className="description">Predict wisely, Join the game, and let the winning journey unlock!!!!!</p>
         <div className="title">Enter Your Credentials!!!</div>
-        {isSubmitted ? <div>User is successfully logged in    
-            <Link href="/">Go TO DASHBOARD</Link>
-        </div> : renderForm}
+        {isSubmitted ? (
+          <div>
+            User is successfully logged in
+            <Link href="/" className="linkDecor">Go TO DASHBOARD</Link>
+          </div>
+        ) : (
+          renderForm
+        )}
       </div>
     </div>
   );

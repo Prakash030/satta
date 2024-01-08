@@ -1,15 +1,85 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Dashboard from "@/components/Dashboard";
 import WalletButtonsWithImage from "@/components/WalletButtonsWithImage";
 import GameBar from "@/components/GameBar";
 import Image from "next/image";
+import "../styles.css";
 
-import dbConnect from '../db';
+interface GameResult {
+  gameName: string;
+  gameNumber: string;
+}
 
 
-dbConnect(); 
+const gamesTimings: { [key: string]: string } = {
+  "MILAN_MORNING": "10:15 am to 11:15 am",
+  "SIVAJI": "11:30 am to 12:30 pm", //highlight
+  "KALYAN_MORNING": "11:00 am to 12:00 pm",
+  "SRIDEVI": "11:35 am to 12:35 pm",
+  "SIVA": "12:30 pm to 01:30 pm",// – Highlight with yellow
+  "MADHUR_DAY": "1:30 pm to 2:30 pm",
+  "MILAN_DAY": "2:15 pm to 04:15 pm",
+  "KALYAN": "3:45 pm to 5:45 pm",
+  "MAHARANI_DAY": "5:15 pm to 7:15 pm",
+  "SIVAJI_NIGHT": "7:00 pm to 8:00 pm",// – Highlight with yellow
+  "SRIDEVI_NIGHT": "7:00 pm to 8:00 pm",
+  "MADHUR_NIGHT": "8:30 pm to 10:30 pm",
+  "MILAN_NIGHT": "9:00 pm to 11:00 pm",
+  "MAIN_BAJAR": "9:35 pm to 12:05 am",
+  "MAHARANI_NIGHT": "10:15 pm to 12:15 am"
+};
 
 export default function HomePage() {
+  const [gameResults, setGameResults] = useState<{ [gameName: string]: string }>({});
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      // console.log("yes, I am called");
+      try {
+        const response = await fetch(`/api/getResult`, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || "Failed to get game data");
+        }
+
+        const resultData = await response.json();
+        // console.log("resultData", resultData.result);
+
+        // Convert the result object into an array
+        const resultArray: GameResult[] = Object.entries(resultData.result).map(
+          ([gameName, gameNumber]) => ({
+            gameName,
+            gameNumber: gameNumber as string,
+          })
+        );
+
+        // Map from the 2nd element to the 3rd last element
+        const mappedResults = resultArray.slice(1, -3);
+
+        // Convert the array of objects to an object with game names as keys
+        const newGameResults = mappedResults.reduce((acc, { gameName, gameNumber }) => {
+          acc[gameName] = gameNumber;
+          return acc;
+        }, {} as { [gameName: string]: string });
+
+        setGameResults(newGameResults);
+      } catch (error) {
+        console.error("Error getting game data:", error);
+      }
+    };
+
+    fetchResults();
+  }, []);
+
+  function padGameNumber(gameNumber: string): string {
+    const paddedGameNumber = gameNumber.padEnd(8, "x");
+    return `${paddedGameNumber.slice(0, 3)}-${paddedGameNumber.slice(3, 5)}-${paddedGameNumber.slice(5)}`;
+  }
 
   return (
     <div className="bg-red-800">
@@ -20,60 +90,20 @@ export default function HomePage() {
           Live Results !!!
         </div>
 
-        <GameBar
-          gameName="SRIDEVI"
-          gameNumber="468-31-234"
-          gameTiming="12:00 PM - 1:00 PM"
-        />
-        <GameBar
-          gameName="SRIDEVI"
-          gameNumber="468-31-234"
-          gameTiming="12:00 PM - 1:00 PM"
-        />
-        <GameBar
-          gameName="SRIDEVI"
-          gameNumber="468-31-234"
-          gameTiming="12:00 PM - 1:00 PM"
-        />
-        <GameBar
-          gameName="SRIDEVI"
-          gameNumber="468-31-234"
-          gameTiming="12:00 PM - 1:00 PM"
-        />
-        <GameBar
-          gameName="SRIDEVI"
-          gameNumber="468-31-234"
-          gameTiming="12:00 PM - 1:00 PM"
-        />
-        <GameBar
-          gameName="SRIDEVI"
-          gameNumber="468-31-234"
-          gameTiming="12:00 PM - 1:00 PM"
-        />
-        <GameBar
-          gameName="SRIDEVI"
-          gameNumber="468-31-234"
-          gameTiming="12:00 PM - 1:00 PM"
-        />
-        <GameBar
-          gameName="SRIDEVI"
-          gameNumber="468-31-234"
-          gameTiming="12:00 PM - 1:00 PM"
-        />
-        <GameBar
-          gameName="SRIDEVI"
-          gameNumber="468-31-234"
-          gameTiming="12:00 PM - 1:00 PM"
-        />
-        <GameBar
-          gameName="SRIDEVI"
-          gameNumber="468-31-234"
-          gameTiming="12:00 PM - 1:00 PM"
-        />
-      </div>
-
+        {Object.keys(gameResults).length > 0 ? (
+        Object.entries(gameResults).map(([gameName, gameNumber]) => (
+          <GameBar
+            key={gameName}
+            gameName={gameName}
+            gameNumber={padGameNumber(gameNumber)}
+            gameTiming={gamesTimings[gameName]}
+          />
+        ))
+      ) : (
+        <p>Loading...</p>
+      )}
       <div className=" flex items-center justify-center flex-col mt-4">
-        <div className="w-1/2 bg-white text-3xl font-extrabold text-black rounded-full flex items-center justify-center py-2">
+        <div className="w-1/2 bg-white text-3xl font-extrabold text-black rounded-full flex items-center justify-center py-2 log">
           FREQUENTLY ANSWERED QUESTIONS ??
         </div>
         <div className="bg-blue-900 my-4 h-auto w-full">
@@ -157,6 +187,7 @@ export default function HomePage() {
           height={50}
           alt="Picture of the author"
         />
+      </div>
       </div>
       <div></div>
     </div>

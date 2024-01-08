@@ -8,6 +8,11 @@ const createUserInput = z.object({
     phoneNumber: z.string().min(10),
     password: z.string().min(6),
     balance: z.number(),
+    role:z.string(),
+    bankDetails: z.object({}),
+    withdrawal: z.array(z.object({})),
+    deposit: z.array(z.object({})),
+    
 })
 
 const createUser = async (payload: z.infer<typeof createUserInput>) => {
@@ -20,11 +25,15 @@ const createUser = async (payload: z.infer<typeof createUserInput>) => {
     console.log("inservce",payload);
 
     const newUser = await userModel().create({
-        email: payload.email,
-        name: payload.name,
-        phoneNumber: payload.phoneNumber,
-        password: payload.password,
-        balance: payload.balance,
+      email: payload.email,
+      name: payload.name,
+      phoneNumber: payload.phoneNumber,
+      password: payload.password,
+      balance: payload.balance,
+      role: payload.role,
+      bankDetails: payload.bankDetails,
+      withdrawal: payload.withdrawal,
+      deposit: payload.deposit,
     });
     return newUser;
   };
