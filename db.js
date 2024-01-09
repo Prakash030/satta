@@ -9,7 +9,7 @@ async function dbConnect() {
   }
 
   try {
-    const db = await mongoose.connect(process.env.MONGO_URL, {
+    const db = await mongoose.connect('mongodb+srv://rrsattamatka:rrsattamatka@sattamatka0.t3motic.mongodb.net/', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
