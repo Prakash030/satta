@@ -85,13 +85,12 @@ const GameBar = ({ gameName, gameNumber, gameTiming }: Props) => {
 
   const isDisabled = gameNumber.slice(0,5) !== 'xxx-x' ? true:false;
 
+  const isCustomGame = customGames.includes(gameName.toUpperCase());
+  const bgColorClass = isCustomGame ? "bg-yellow-400" : "bg-white";
+
   return (
     <div>
-      <div
-        className={`bg-${
-          customGames.includes(gameName) ? "yellow-400" : "white"
-        } flex justify-between my-2`}
-      >
+      <div className={`flex justify-between my-2 ${bgColorClass}`}>
         <div className="flex">
           <Link
             href={`https://rrsattamatka.co.in/ResultCharts?gameName=${gameName}&chartType=PANEL CHART&isAdmin=${isAdmin}`}
