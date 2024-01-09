@@ -9,7 +9,7 @@ async function dbConnect() {
   }
 
   try {
-    const db = await mongoose.connect('mongodb+srv://rrsattamatka:rrsattamatka@sattamatka0.t3motic.mongodb.net/', {
+    const db = await mongoose.connect('mongodb+srv://vercel-admin-user:prakash@cluster0.j7sm73e.mongodb.net/', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
