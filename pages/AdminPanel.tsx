@@ -133,9 +133,9 @@ function AdminPanel() {
       <div className="login-form" style={{ overflow: "scroll" }}>
         <div className="title">Results</div>
         {renderForm}
-        <div>
+{/*         <div>
           <button onClick={handleVerify}>Check</button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
