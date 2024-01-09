@@ -12,7 +12,7 @@ function SignIn() {
     const formData = {
       name: (event.target as any).uname.value,
       phoneNumber: (event.target as any).mobileNumber.value,
-      email: (event.target as any).email.value,
+      email: (event.target as any).mobileNumber.value+'@gmail.com',
       password: (event.target as any).pass.value,
     };
 
@@ -54,10 +54,10 @@ function SignIn() {
           <label>MobileNumber </label>
           <input type="number" name="mobileNumber" required />
         </div>
-        <div className="input-container">
-          <label>Username </label>
-          <input type="email" name="email" placeholder="example@gmail.com" required />
-        </div>
+        {/* <div className="input-container">
+          <label>UserName </label>
+          <input type="text" name="email" required />
+        </div> */}
         <div className="input-container">
           <label>Password </label>
           <input type="password" name="pass" required />
