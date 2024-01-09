@@ -19,7 +19,7 @@ function Login() {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const uname = formData.get("uname") as string;
+    const uname = (formData.get("uname") as string)+'@gmail.com';
     const pass = formData.get("pass") as string;
 
     try {
@@ -59,8 +59,8 @@ function Login() {
     <div className="form">
       <form onSubmit={handleSubmit}>
         <div className="input-container">
-          <label>Username </label>
-          <input type="text" name="uname" required />
+          <label>PhoneNumber </label>
+          <input type="number" name="uname" required />
           {renderErrorMessage("uname")}
         </div>
         <div className="input-container">
