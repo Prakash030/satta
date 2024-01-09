@@ -55,7 +55,7 @@ function SignIn() {
           <input type="number" name="mobileNumber" required />
         </div>
         <div className="input-container">
-          <label>Email </label>
+          <label>Username </label>
           <input type="email" name="email" required />
         </div>
         <div className="input-container">
