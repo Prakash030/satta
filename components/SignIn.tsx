@@ -56,7 +56,7 @@ function SignIn() {
         </div>
         <div className="input-container">
           <label>Username </label>
-          <input type="email" name="email" required />
+          <input type="email" name="email" placeholder="example@gmail.com" required />
         </div>
         <div className="input-container">
           <label>Password </label>
