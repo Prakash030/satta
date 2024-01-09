@@ -94,14 +94,14 @@ const GameBar = ({ gameName, gameNumber, gameTiming }: Props) => {
       >
         <div className="flex">
           <Link
-            href={`http://localhost:3000/ResultCharts?gameName=${gameName}&chartType=PANEL CHART&isAdmin=${isAdmin}`}
+            href={`https://rrsattamatka.co.in/ResultCharts?gameName=${gameName}&chartType=PANEL CHART&isAdmin=${isAdmin}`}
           >
             <div className="bg-red-800 mx-4 my-4 p-4 rounded-full text-2xl font-extrabold font-serif button">
               Panel
             </div>
           </Link>
           <Link
-            href={`http://localhost:3000/ResultCharts?gameName=${gameName}&chartType=JODI CHART&isAdmin=${isAdmin}`}
+            href={`https://rrsattamatka.co.in/ResultCharts?gameName=${gameName}&chartType=JODI CHART&isAdmin=${isAdmin}`}
           >
             <div className="bg-red-800  my-4 p-4 rounded-full text-2xl font-extrabold font-serif button">
               Jodi
