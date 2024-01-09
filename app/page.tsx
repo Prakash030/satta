@@ -73,7 +73,30 @@ export default function HomePage() {
       }
     };
 
+    const checkResult= async ()=>
+    {
+      try {
+        const response = await fetch(`/api/verifyResult`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || "Failed to get game data");
+        }
+  
+        console.log("Check done!!!!");
+        // alert("Check done!!!!");
+      } catch (error) {
+        console.error("Error getting game data:", error);
+      }
+    }
+
     fetchResults();
+    checkResult();
   }, []);
 
   function padGameNumber(gameNumber: string): string {

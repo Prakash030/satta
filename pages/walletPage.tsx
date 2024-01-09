@@ -3,7 +3,7 @@ import Link from 'next/link'
 import "../styles.css";
 import { parseCookies } from 'nookies';
 
-function WalletPage() {
+function walletPage() {
   const [bank, setBank] = useState<boolean>(false);
   const [clientRender, setClientRender] = useState(false);
   const [email, setEmail] = useState("");
@@ -176,4 +176,4 @@ function WalletPage() {
   )
 }
 
-export default WalletPage
+export default walletPage

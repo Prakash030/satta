@@ -8,12 +8,14 @@ const TripplePatti = () => {
   const [closePatti, setClosePatti] = React.useState("");
 
   const router = useRouter();
-  const { gameName, gameType, gameTiming } = router.query;
+  const { gameName, gameType, gameTiming,isDisabled } = router.query;
   const cookies = parseCookies();
   const user = cookies.userCredentials
     ? JSON.parse(cookies.userCredentials)
     : "";
   const userEmail = user.email;
+
+  const isDisabledVal = isDisabled == 'true' ? true : false;
 
   interface FormData {
     [key: string]: string;
@@ -296,6 +298,7 @@ const TripplePatti = () => {
                   setOpenPatti(prePaddedValue);
                 }
               }}
+              disabled={isDisabledVal}
             />
           </div>
 

@@ -58,26 +58,26 @@ function AdminPanel() {
     "MAHARANI_NIGHT",
   ];
 
-  const handleVerify = async () => {
-    try {
-      const response = await fetch(`/api/verifyResult`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  // const handleVerify = async () => {
+  //   try {
+  //     const response = await fetch(`/api/verifyResult`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to get game data");
-      }
+  //     if (!response.ok) {
+  //       const data = await response.json();
+  //       throw new Error(data.error || "Failed to get game data");
+  //     }
 
-      console.log("Check done!!!!");
-      alert("Check done!!!!");
-    } catch (error) {
-      console.error("Error getting game data:", error);
-    }
-  };
+  //     console.log("Check done!!!!");
+  //     alert("Check done!!!!");
+  //   } catch (error) {
+  //     console.error("Error getting game data:", error);
+  //   }
+  // };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -133,9 +133,9 @@ function AdminPanel() {
       <div className="login-form" style={{ overflow: "scroll" }}>
         <div className="title">Results</div>
         {renderForm}
-        <div>
+        {/* <div>
           <button onClick={handleVerify}>Check</button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

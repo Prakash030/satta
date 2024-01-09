@@ -15,17 +15,17 @@ import "../styles.css";
 const GameList = () => {
 
   const router = useRouter();
-  const { gameName,gameTiming } = router.query;
+  const { gameName,gameTiming,isDisabled } = router.query;
 
   const games = [
-    { id: 1, name: `/SingleAnk?gameName=${gameName}&gameType=SINGLE_ANK&gameTiming=${gameTiming}`, imageUrl: "/singleAnk.jpeg" },
-    { id: 2, name: `/Jodi?gameName=${gameName}&gameType=JODI&gameTiming=${gameTiming}`, imageUrl: "/jodi.jpeg" },
+    { id: 1, name: `/SingleAnk?gameName=${gameName}&gameType=SINGLE_ANK&gameTiming=${gameTiming}&isDisabled=${isDisabled}`, imageUrl: "/singleAnk.jpeg" },
+    { id: 2, name: `/Jodi?gameName=${gameName}&gameType=JODI&gameTiming=${gameTiming}&isDisabled=${isDisabled}`, imageUrl: "/jodi.jpeg" },
 
   ];
   const games2 = [
-    { id: 1, name: `/SinglePatti?gameName=${gameName}&gameType=SINGLE_PATTI&gameTiming=${gameTiming}`, imageUrl: "/singlePatti.jpeg" },
-    { id: 2, name: `/DoublePatti?gameName=${gameName}&gameType=DOUBLE_PATTI&gameTiming=${gameTiming}`, imageUrl: "/doublePatti.jpeg" },
-    { id: 3, name: `/TripplePatti?gameName=${gameName}&gameType=TRIPPLE_PATTI&gameTiming=${gameTiming}`, imageUrl: "/tripplePatti.jpeg" },
+    { id: 1, name: `/SinglePatti?gameName=${gameName}&gameType=SINGLE_PATTI&gameTiming=${gameTiming}&isDisabled=${isDisabled}`, imageUrl: "/singlePatti.jpeg" },
+    { id: 2, name: `/DoublePatti?gameName=${gameName}&gameType=DOUBLE_PATTI&gameTiming=${gameTiming}&isDisabled=${isDisabled}`, imageUrl: "/doublePatti.jpeg" },
+    { id: 3, name: `/TripplePatti?gameName=${gameName}&gameType=TRIPPLE_PATTI&gameTiming=${gameTiming}&isDisabled=${isDisabled}`, imageUrl: "/tripplePatti.jpeg" },
    
   ];
 

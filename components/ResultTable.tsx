@@ -27,6 +27,8 @@ const ResultTable: React.FC<ResultTableProps> = ({
   const lastTwoMonths = new Date(today.getFullYear(), today.getMonth() - 4, 1);
 
 
+  const isJodiChart = chartType == "JODI CHART" ? true : false;
+
   useEffect(() => {
     const fetchResults = async () => {
       try {
@@ -200,7 +202,10 @@ console.log("results",results);
                     )
                   }
                   disabled={!isAdmin} 
-                  style={{color:'black', fontWeight:"bold", textAlign:"center"}}
+                  style={{
+                    fontSize: "20px",
+                    color: isJodiChart && /(\d)\1/.test(dayResults.Mon?.toString()) ? "red" : "black",
+                  }}
                   
                 />
                 {isAdmin && (
@@ -223,7 +228,10 @@ console.log("results",results);
                     )
                   }
                   disabled={!isAdmin} 
-                  style={{color:'black', fontWeight:"bold", textAlign:"center"}}
+                 style={{
+                    fontSize: "20px",
+                    color: isJodiChart && /(\d)\1/.test(dayResults.Mon?.toString()) ? "red" : "black",
+                  }}
                 />
                 {isAdmin && (
                   <button onClick={() => handleButtonClick(startDate, "Tue")}>
@@ -245,7 +253,10 @@ console.log("results",results);
                     )
                   }
                   disabled={!isAdmin} 
-                  style={{color:'black', fontWeight:"bold", textAlign:"center"}}
+                 style={{
+                    fontSize: "20px",
+                    color: isJodiChart && /(\d)\1/.test(dayResults.Mon?.toString()) ? "red" : "black",
+                  }}
                 />
                 {isAdmin && (
                   <button onClick={() => handleButtonClick(startDate, "Wed")}>
@@ -267,7 +278,10 @@ console.log("results",results);
                     )
                   }
                   disabled={!isAdmin} 
-                  style={{color:'black', fontWeight:"bold", textAlign:"center"}}
+                 style={{
+                    fontSize: "20px",
+                    color: isJodiChart && /(\d)\1/.test(dayResults.Mon?.toString()) ? "red" : "black",
+                  }}
                 />
                 {isAdmin && (
                   <button onClick={() => handleButtonClick(startDate, "Thu")}>
@@ -289,7 +303,10 @@ console.log("results",results);
                     )
                   }
                   disabled={!isAdmin} 
-                  style={{color:'black', fontWeight:"bold", textAlign:"center"}}
+                 style={{
+                    fontSize: "20px",
+                    color: isJodiChart && /(\d)\1/.test(dayResults.Mon?.toString()) ? "red" : "black",
+                  }}
                 />
                 {isAdmin && (
                   <button onClick={() => handleButtonClick(startDate, "Fri")}>
@@ -311,7 +328,10 @@ console.log("results",results);
                     )
                   }
                   disabled={!isAdmin} 
-                  style={{color:'black', fontWeight:"bold", textAlign:"center"}}
+                 style={{
+                    fontSize: "20px",
+                    color: isJodiChart && /(\d)\1/.test(dayResults.Mon?.toString()) ? "red" : "black",
+                  }}
                 />
                 {isAdmin && (
                   <button onClick={() => handleButtonClick(startDate, "Sat")}>
@@ -333,7 +353,10 @@ console.log("results",results);
                     )
                   }
                   disabled={!isAdmin} 
-                  style={{color:'black', fontWeight:"bold", textAlign:"center"}}
+                 style={{
+                    fontSize: "20px",
+                    color: isJodiChart && /(\d)\1/.test(dayResults.Mon?.toString()) ? "red" : "black",
+                  }}
                 />
                 {isAdmin && (
                   <button onClick={() => handleButtonClick(startDate, "Sun")}>

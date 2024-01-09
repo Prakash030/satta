@@ -83,23 +83,25 @@ const GameBar = ({ gameName, gameNumber, gameTiming }: Props) => {
     fetchData();
   }, []);
 
+  const isDisabled = gameNumber.slice(0,5) !== 'xxx-x' ? true:false;
+
   return (
     <div>
       <div
         className={`bg-${
-          customGames.includes(gameName) ? "yellow-200" : "white"
+          customGames.includes(gameName) ? "yellow-400" : "white"
         } flex justify-between my-2`}
       >
         <div className="flex">
           <Link
-            href={`https://rrsattamatka.co.in/ResultCharts?gameName=${gameName}&chartType=PANEL CHART&isAdmin=${isAdmin}`}
+            href={`http://localhost:3000/ResultCharts?gameName=${gameName}&chartType=PANEL CHART&isAdmin=${isAdmin}`}
           >
             <div className="bg-red-800 mx-4 my-4 p-4 rounded-full text-2xl font-extrabold font-serif button">
               Panel
             </div>
           </Link>
           <Link
-            href={`https://rrsattamatka.co.in/ResultCharts?gameName=${gameName}&chartType=JODI CHART&isAdmin=${isAdmin}`}
+            href={`http://localhost:3000/ResultCharts?gameName=${gameName}&chartType=JODI CHART&isAdmin=${isAdmin}`}
           >
             <div className="bg-red-800  my-4 p-4 rounded-full text-2xl font-extrabold font-serif button">
               Jodi
@@ -118,7 +120,7 @@ const GameBar = ({ gameName, gameNumber, gameTiming }: Props) => {
               : "Betting is closed !!!"}
           </p>
 
-          <Link href={`/gameList?gameName=${gameName}&gameTiming=${gameTiming}`}>
+          <Link href={`/gameList?gameName=${gameName}&gameTiming=${gameTiming}&isDisabled=${isDisabled}`}>
             <button
               className={`bg-red-800 mx-4 my-4 p-4 rounded-full text-2xl font-extrabold font-serif flex ${
                 isButtonEnabled ? "button" : "cursor-not-allowed opacity-50 button"
