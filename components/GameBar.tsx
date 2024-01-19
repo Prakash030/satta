@@ -248,21 +248,21 @@ const GameBar = ({ gameName, gameNumber, gameTiming }: Props) => {
             <>
             <div className="flex border px-2 py-1 rounded-full border-white">
               <div className="mr-1">
-                <strong>Open Bid Start: <br /></strong>{" "}
+                <strong>Open Bid End: <br /></strong>{" "}
                 {gamesTimingValue[gameName].openBidStart}
               </div>
               <div>
-                <strong>Open Bid End: <br /></strong>{" "}
+                <strong>Close Bid End: <br /></strong>{" "}
                 {gamesTimingValue[gameName].openBidEnd}
               </div>
               </div>
               <div className="flex mt-2 border px-2 py-1 rounded-full border-white">
               <div className="mr-1">
-                <strong>Close Bid Start: <br /></strong>{" "}
+                <strong>Open Result: <br /></strong>{" "}
                 {gamesTimingValue[gameName].closeBidStart}
               </div>
               <div>
-                <strong>Close Bid End: <br /></strong>{" "}
+                <strong>Close Result: <br /></strong>{" "}
                 {gamesTimingValue[gameName].closeBidEnd}
               </div>
               </div>
