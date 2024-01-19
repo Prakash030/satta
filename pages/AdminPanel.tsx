@@ -18,10 +18,12 @@ function AdminPanel() {
 
         if (!response.ok) {
           console.error("Error fetching user data:");
+          window.location.href = "/";
           return;
         }
 
         const user = await response.json();
+        console.log("User:", user);
 
         if (user.result.role !== "admin") {
           window.location.href = "/";

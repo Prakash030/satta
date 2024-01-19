@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.2.9",
     "mongoose": "^8.0.3",
     "next": "14.0.3",
     "nookies": "^2.5.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-icons": "^5.0.1",
     "react-tabs": "^6.0.2",
     "tw-elements-react": "^1.0.0-alpha2",
     "zod": "^3.22.4"

@@ -17,10 +17,12 @@ const TablePage = () => {
 
         if (!response.ok) {
           console.error("Error fetching user data:");
+          window.location.href = "/";
           return;
         }
 
         const user = await response.json();
+        console.log("user", user);  
 
         if (user.result.role !== "admin") {
           window.location.href = "/";
