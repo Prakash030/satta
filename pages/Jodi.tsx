@@ -141,7 +141,7 @@ const Jodi = () => {
           >
             Jodi
           </span>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap:"20px",marginTop:"50px" }}>
             <span
               style={{
                 backgroundColor: "gray",
@@ -183,19 +183,20 @@ const Jodi = () => {
       ></div>
       <div>
         <div
-          className="AnkCardList"
+          
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
             gap: "10px",
-            marginLeft: "350px",
+            // marginLeft: "350px",
           }}
+          className="AnkCardList"
         >
           <div>
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "30px",
+                fontSize: "25px",
                 marginBottom: "20px",
               }}
             >
@@ -207,7 +208,7 @@ const Jodi = () => {
               style={{
                 backgroundColor: "#d0d6d1",
                 borderRadius: "10%",
-                width: "200px",
+                width: "100px",
                 padding: "10px",
               }}
               maxLength={2}
@@ -229,7 +230,7 @@ const Jodi = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "30px",
+                fontSize: "25px",
                 marginBottom: "20px",
               }}
             >
@@ -241,7 +242,7 @@ const Jodi = () => {
               style={{
                 backgroundColor: "#d0d6d1",
                 borderRadius: "10%",
-                width: "200px",
+                width: "100px",
                 padding: "10px",
               }}
               name="amount"

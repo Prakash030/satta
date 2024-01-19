@@ -213,7 +213,7 @@ const TripplePatti = () => {
           >
             Tripple Patti
           </span>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap:"20px", marginTop:"50px" }}>
             <span
               style={{
                 backgroundColor: "gray",
@@ -260,14 +260,14 @@ const TripplePatti = () => {
             display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
             gap: "10px",
-            marginLeft: "350px",
+            // marginLeft: "350px",
           }}
         >
           <div>
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "30px",
+                fontSize: "25px",
                 marginBottom: "20px",
               }}
             >
@@ -279,7 +279,7 @@ const TripplePatti = () => {
               style={{
                 backgroundColor: "#d0d6d1",
                 borderRadius: "10%",
-                width: "200px",
+                width: "100px",
                 padding: "10px",
               }}
               maxLength={3}
@@ -306,7 +306,7 @@ const TripplePatti = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "30px",
+                fontSize: "25px",
                 marginBottom: "20px",
               }}
             >
@@ -318,7 +318,7 @@ const TripplePatti = () => {
               style={{
                 backgroundColor: "#d0d6d1",
                 borderRadius: "10%",
-                width: "200px",
+                width: "100px",
                 padding: "10px",
               }}
               name="openAmount"
@@ -330,7 +330,7 @@ const TripplePatti = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "30px",
+                fontSize: "25px",
                 marginBottom: "20px",
               }}
             >
@@ -342,7 +342,7 @@ const TripplePatti = () => {
               style={{
                 backgroundColor: "#d0d6d1",
                 borderRadius: "10%",
-                width: "200px",
+                width: "100px",
                 padding: "10px",
               }}
               maxLength={3}
@@ -368,7 +368,7 @@ const TripplePatti = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "30px",
+                fontSize: "25px",
                 marginBottom: "20px",
               }}
             >
@@ -380,7 +380,7 @@ const TripplePatti = () => {
               style={{
                 backgroundColor: "#d0d6d1",
                 borderRadius: "10%",
-                width: "200px",
+                width: "100px",
                 padding: "10px",
               }}
               name="closeAmount"

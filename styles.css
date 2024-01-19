@@ -64,6 +64,12 @@
     width: 500px; 
     height: 500px; 
   }
+
+  .gameCustom{
+    margin-top: 100px;
+    margin-left:300px;
+    margin-right:300px
+  }
   
   .list-container {
     display: flex;
@@ -171,6 +177,7 @@
     flex-wrap: wrap;
     justify-content: space-around;
     margin-top: 30px;
+    margin-left: 250px;
 
   }
 
@@ -231,6 +238,16 @@
   .chartType{
     font-size: 0.8rem;
   }
+  .gameCustom{
+    margin-top: 0px;
+    margin-left:0px;
+    margin-right:0px
+  }
+  .AnkCardList{
+
+    margin-left: 0;
+
+  }
 }
 @media (max-width: 400px) {
   
@@ -254,5 +271,15 @@
     display: flex;
     margin-left: 0;
     margin-right: 0;
+  }
+  .gameCustom{
+    margin-top: 0px;
+    margin-left:0px;
+    margin-right:0px
+  }
+  .AnkCardList{
+
+    margin-left: 0;
+
   }
 }

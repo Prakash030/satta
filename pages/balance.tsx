@@ -138,6 +138,7 @@ export default function Balance() {
               <th>Game Name</th>
               <th>Game type</th>
               <th>Amount</th>
+              <th>Bid Number</th>
               <th>Date of Request</th>
             </tr>
           </thead>
@@ -147,6 +148,7 @@ export default function Balance() {
           <td>{gameItem.gameName}</td>
           <td>{gameItem.gameType}</td>
           <td>{gameItem.amount}</td>
+          <td>{gameItem.digits}</td>
           <td>{gameItem.createdAt}</td>
         </tr>
       ))}

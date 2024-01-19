@@ -48,7 +48,7 @@ const GameList = () => {
           Select Bidding Option Here
         </span>
       </h1>
-      <div className="game-list" style={{marginTop:"100px",marginLeft:"300px",marginRight:"300px"}}>
+      <div className="game-list gameCustom" >
         {games.map((game) => (
           // <GameCard key={game.id} game={game} />
           <Link href={game.name} key={game.id}>
@@ -62,7 +62,7 @@ const GameList = () => {
           </Link>
         ))}
       </div>
-      <div className="game-list" style={{marginTop:"100px"}}>
+      <div className="game-list" >
         {games2.map((game) => (
           <Link href={game.name} key={game.id}>
             <Image
