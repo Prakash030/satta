@@ -47,15 +47,21 @@ const isPlayButtonEnabled = (gameTiming: string): boolean => {
     0
   );
 
+  // Check if end time is "12:00 AM" or "12:05 AM" (midnight) and consider it as available all day
+  if (endHour === '12' && endMinute === '05' || endMinute === '15' && endPeriod.toLowerCase() === 'am') {
+
+    return true;
+  }
+
   const endTime = new Date();
   endTime.setHours(
     convertTo24HourFormat(endHour, endPeriod),
-    parseInt(endMinute, 10),
+    parseInt(endMinute, 10) - 5,
     0,
     0
   );
 
-  return currentDateTime >= startTime && currentDateTime <= endTime;
+  return currentDateTime <= endTime;
 };
 
 const GameBar = ({ gameName, gameNumber, gameTiming }: Props) => {
