@@ -8,14 +8,13 @@ const TripplePatti = () => {
   const [closePatti, setClosePatti] = React.useState("");
 
   const router = useRouter();
-  const { gameName, gameType, gameTiming,isDisabled } = router.query;
+  const { gameName, gameType, gameTiming } = router.query;
   const cookies = parseCookies();
   const user = cookies.userCredentials
     ? JSON.parse(cookies.userCredentials)
     : "";
   const userEmail = user.email;
 
-  const isDisabledVal = isDisabled == 'true' ? true : false;
 
   interface FormData {
     [key: string]: string;
@@ -37,24 +36,17 @@ const TripplePatti = () => {
     const matchResult = gameTiming?.match(
       /(\d+):(\d+)\s(AM|PM)\sto\s(\d+):(\d+)\s(AM|PM)/i
     );
-
+  
     if (!matchResult) {
       return false;
     }
-
-    const [
-      ,
-      startHour,
-      startMinute,
-      startPeriod,
-      endHour,
-      endMinute,
-      endPeriod,
-    ] = matchResult;
+  
+    const [, startHour, startMinute, startPeriod, endHour, endMinute, endPeriod] =
+      matchResult;
     const isAM = (period: string) => period.toLowerCase() === "am";
-
+  
     const currentDateTime = new Date();
-
+  
     const convertTo24HourFormat = (hour: string, period: string) => {
       let resultHour = parseInt(hour, 10);
       if (!isAM(period) && resultHour !== 12) {
@@ -62,24 +54,17 @@ const TripplePatti = () => {
       }
       return resultHour;
     };
-
+  
+  
     const startTime = new Date();
     startTime.setHours(
       convertTo24HourFormat(startHour, startPeriod),
-      parseInt(startMinute, 10),
+      parseInt(startMinute, 10) - 5, // Subtract 5 minutes
       0,
       0
     );
-
-    const endTime = new Date();
-    endTime.setHours(
-      convertTo24HourFormat(endHour, endPeriod),
-      parseInt(endMinute, 10),
-      0,
-      0
-    );
-
-    return currentDateTime >= startTime && currentDateTime <= endTime;
+  
+    return currentDateTime <= startTime;
   };
 
   function validateNumbers(input: string): boolean {
@@ -205,7 +190,7 @@ const TripplePatti = () => {
               backgroundColor: "red",
               padding: "10px",
               borderRadius: "20%",
-              marginLeft: "45%",
+              marginLeft: "25%",
               fontWeight: "bold",
               fontSize: "30px",
               color: "white",
@@ -213,7 +198,7 @@ const TripplePatti = () => {
           >
             Tripple Patti
           </span>
-          <div style={{ display: "flex", justifyContent: "space-between", gap:"20px", marginTop:"50px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" ,gap:"20px", marginTop:"50px"}}>
             <span
               style={{
                 backgroundColor: "gray",
@@ -267,7 +252,7 @@ const TripplePatti = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -298,7 +283,7 @@ const TripplePatti = () => {
                   setOpenPatti(prePaddedValue);
                 }
               }}
-              disabled={isDisabledVal}
+              disabled={!isButtonEnabled}
             />
           </div>
 
@@ -306,7 +291,7 @@ const TripplePatti = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -330,7 +315,7 @@ const TripplePatti = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -368,7 +353,7 @@ const TripplePatti = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -412,7 +397,7 @@ const TripplePatti = () => {
           <input type="reset" />
         </div>
         <div>
-          <input type="submit" disabled={!isButtonEnabled} />
+          <input type="submit"  />
         </div>
       </div>
     </form>

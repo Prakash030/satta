@@ -8,14 +8,13 @@ const SinglePatti = () => {
   const [closePatti, setClosePatti] = React.useState("");
 
   const router = useRouter();
-  const { gameName, gameType, gameTiming,isDisabled } = router.query;
+  const { gameName, gameType, gameTiming } = router.query;
   const cookies = parseCookies();
   const user = cookies.userCredentials
     ? JSON.parse(cookies.userCredentials)
     : "";
   const userEmail = user.email;
 
-  const isDisabledVal = isDisabled == 'true' ? true : false;
 
   interface FormData {
     [key: string]: string;
@@ -37,24 +36,17 @@ const SinglePatti = () => {
     const matchResult = gameTiming?.match(
       /(\d+):(\d+)\s(AM|PM)\sto\s(\d+):(\d+)\s(AM|PM)/i
     );
-
+  
     if (!matchResult) {
       return false;
     }
-
-    const [
-      ,
-      startHour,
-      startMinute,
-      startPeriod,
-      endHour,
-      endMinute,
-      endPeriod,
-    ] = matchResult;
+  
+    const [, startHour, startMinute, startPeriod, endHour, endMinute, endPeriod] =
+      matchResult;
     const isAM = (period: string) => period.toLowerCase() === "am";
-
+  
     const currentDateTime = new Date();
-
+  
     const convertTo24HourFormat = (hour: string, period: string) => {
       let resultHour = parseInt(hour, 10);
       if (!isAM(period) && resultHour !== 12) {
@@ -62,24 +54,16 @@ const SinglePatti = () => {
       }
       return resultHour;
     };
-
+  
     const startTime = new Date();
     startTime.setHours(
       convertTo24HourFormat(startHour, startPeriod),
-      parseInt(startMinute, 10),
+      parseInt(startMinute, 10) - 5, // Subtract 5 minutes
       0,
-      0
+      0 
     );
-
-    const endTime = new Date();
-    endTime.setHours(
-      convertTo24HourFormat(endHour, endPeriod),
-      parseInt(endMinute, 10),
-      0,
-      0
-    );
-
-    return currentDateTime >= startTime && currentDateTime <= endTime;
+  
+    return currentDateTime <= startTime;
   };
 
   const isButtonEnabled = isPlayButtonEnabled(gameTiming as string);
@@ -140,7 +124,7 @@ const SinglePatti = () => {
               backgroundColor: "red",
               padding: "10px",
               borderRadius: "20%",
-              marginLeft: "45%",
+              marginLeft: "25%",
               fontWeight: "bold",
               fontSize: "30px",
               color: "white",
@@ -190,20 +174,19 @@ const SinglePatti = () => {
       ></div>
       <div>
         <div
-          
+          className="AnkCardList"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
             gap: "10px",
             // marginLeft: "350px",
           }}
-          className="AnkCardList"
         >
           <div>
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -230,7 +213,7 @@ const SinglePatti = () => {
 
                 setOpenPatti(prePaddedValue);
               }}
-              disabled={isDisabledVal}
+              disabled={!isButtonEnabled}
             />
           </div>
 
@@ -238,7 +221,7 @@ const SinglePatti = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -262,7 +245,7 @@ const SinglePatti = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -296,7 +279,7 @@ const SinglePatti = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -340,7 +323,7 @@ const SinglePatti = () => {
           <input type="reset" />
         </div>
         <div>
-          <input type="submit" disabled={!isButtonEnabled} />
+          <input type="submit" />
         </div>
       </div>
     </form>

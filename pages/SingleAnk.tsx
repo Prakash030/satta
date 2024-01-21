@@ -8,14 +8,13 @@ const SingleAnk = () => {
   const [closeAnk, setCloseAnk] = React.useState("");
 
   const router = useRouter();
-  const { gameName, gameType, gameTiming,isDisabled } = router.query;
+  const { gameName, gameType, gameTiming } = router.query;
   const cookies = parseCookies();
   const user = cookies.userCredentials
     ? JSON.parse(cookies.userCredentials)
     : "";
   const userEmail = user.email;
-
-  const isDisabledVal = isDisabled == 'true' ? true : false;
+  
 
   interface FormData {
     [key: string]: string;
@@ -37,24 +36,17 @@ const SingleAnk = () => {
     const matchResult = gameTiming?.match(
       /(\d+):(\d+)\s(AM|PM)\sto\s(\d+):(\d+)\s(AM|PM)/i
     );
-
+  
     if (!matchResult) {
       return false;
     }
-
-    const [
-      ,
-      startHour,
-      startMinute,
-      startPeriod,
-      endHour,
-      endMinute,
-      endPeriod,
-    ] = matchResult;
+  
+    const [, startHour, startMinute, startPeriod, endHour, endMinute, endPeriod] =
+      matchResult;
     const isAM = (period: string) => period.toLowerCase() === "am";
-
+  
     const currentDateTime = new Date();
-
+  
     const convertTo24HourFormat = (hour: string, period: string) => {
       let resultHour = parseInt(hour, 10);
       if (!isAM(period) && resultHour !== 12) {
@@ -62,25 +54,19 @@ const SingleAnk = () => {
       }
       return resultHour;
     };
-
+  
+  
     const startTime = new Date();
     startTime.setHours(
       convertTo24HourFormat(startHour, startPeriod),
-      parseInt(startMinute, 10),
+      parseInt(startMinute, 10) - 5, // Subtract 5 minutes
       0,
       0
     );
-
-    const endTime = new Date();
-    endTime.setHours(
-      convertTo24HourFormat(endHour, endPeriod),
-      parseInt(endMinute, 10),
-      0,
-      0
-    );
-
-    return currentDateTime >= startTime && currentDateTime <= endTime;
+  
+    return currentDateTime <= startTime;
   };
+  
 
   const isButtonEnabled = isPlayButtonEnabled(gameTiming as string);
 
@@ -137,7 +123,7 @@ const SingleAnk = () => {
               backgroundColor: "red",
               padding: "10px",
               borderRadius: "20%",
-              marginLeft: "45%",
+              marginLeft: "25%",
               fontWeight: "bold",
               fontSize: "30px",
               color: "white",
@@ -145,7 +131,7 @@ const SingleAnk = () => {
           >
             Single Ank
           </span>
-          <div style={{ display: "flex", justifyContent: "space-between", gap:"50px", marginTop: "30px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap:"20px", marginTop:"50px" }}>
             <span
               style={{
                 backgroundColor: "gray",
@@ -187,19 +173,19 @@ const SingleAnk = () => {
       ></div>
       <div>
         <div
+          className="AnkCardList"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
             gap: "10px",
-            // marginLeft: "200px",
+            // marginLeft: "350px",
           }}
-          className="AnkCardList"
         >
           <div>
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -217,7 +203,7 @@ const SingleAnk = () => {
               name="openAnk"
               maxLength={1}
               onChange={(e) => setOpenAnk(e.target.value)}
-              disabled={isDisabledVal}
+              disabled={!isButtonEnabled}
             />
           </div>
 
@@ -225,7 +211,7 @@ const SingleAnk = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -249,7 +235,7 @@ const SingleAnk = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -274,7 +260,7 @@ const SingleAnk = () => {
             <p
               style={{
                 fontWeight: "bold",
-                fontSize: "25px",
+                fontSize: "23px",
                 marginBottom: "20px",
               }}
             >
@@ -318,7 +304,7 @@ const SingleAnk = () => {
           <input type="reset" />
         </div>
         <div>
-          <input type="submit" disabled={!isButtonEnabled} />
+          <input type="submit"  />
         </div>
       </div>
     </form>
