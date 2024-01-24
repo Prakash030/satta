@@ -55,5 +55,6 @@ export const gameModel = () => {
       ? (mongoose.models.Game as mongoose.Model<Game>)
       : mongoose.model<Game>("Game", userSchema);
 
-  return model;
+  return model; 
+  
 };
