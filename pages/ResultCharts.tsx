@@ -11,7 +11,7 @@ const ResultCharts = () => {
   const chartTypeVal = chartType as string;
 
   return (
-    <div style={{backgroundColor:"orange"}}>
+    <div style={{backgroundColor:"orange",paddingBottom:"50vh",maxWidth:"[500]"}}>
       <Chart gameName={gameNameVal} chartType={chartTypeVal} isAdmin={isAdminVal} />
     </div>
   );

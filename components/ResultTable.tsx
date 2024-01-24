@@ -140,25 +140,53 @@ const ResultTable: React.FC<ResultTableProps> = ({
 
     return (
       <>
-        <div style={{ display: "flex",padding:"5px",marginInline:"5px" }}>
-          <div style={{ display: "flex", flexDirection: "column" ,marginInline:"5px"}}>
-            {valueString
-              .substring(0, 3)
-              .split("")
-              .map((digit, index) => (
-                <div key={index}>{digit}</div>
-              ))}
+        <div style={{ display: "flex", padding: "5px", marginInline: "5px" }}>
+          {chartType == "PANEL CHART" && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginInline: "5px",
+              }}
+            >
+              {valueString
+                .substring(0, 3)
+                .split("")
+                .map((digit, index) => (
+                  <div key={index}>{digit}</div>
+                ))}
+            </div>
+          )}
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              fontSize: "30px",
+              marginInline: "5px",
+              color: Number(valueString[3]) === Number(valueString[4])  ? "red" : "inherit",
+            }}
+          >
+            {valueString.substring(3, 5)}
           </div>
 
-          <div style={{display:"flex",flexDirection:"row",alignItems:"center",fontSize:"30px",marginInline:"5px"}}>{valueString.substring(3, 5)}</div>
-          <div style={{ display: "flex", flexDirection: "column",marginInline:"5px" }}>
-            {valueString
-              .substring(5)
-              .split("")
-              .map((digit, index) => (
-                <div key={index}>{digit}</div>
-              ))}
-          </div>
+          {chartType == "PANEL CHART" && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginInline: "5px",
+              }}
+            >
+              {valueString
+                .substring(5)
+                .split("")
+                .map((digit, index) => (
+                  <div key={index}>{digit}</div>
+                ))}
+            </div>
+          )}
         </div>
       </>
     );
@@ -166,7 +194,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
 
   function addZeroPadding(num: number | undefined, len: number): string {
     if (num === undefined) {
-      return "xxxxxxxx";
+      return "";
     }
     console.log("num", num);
     const numString = num?.toString();
@@ -226,10 +254,10 @@ const ResultTable: React.FC<ResultTableProps> = ({
   };
 
   return (
-    <div style={{ overflow: "auto" }}>
+    <div style={{overflow:"auto" }}>
       <table border="1" className="bg">
         <thead>
-          <tr style={{fontSize:"20px"}}>
+          <tr style={{ fontSize: "20px" }}>
             <th>Date Range</th>
             <th>Mon</th>
             <th>Tue</th>
@@ -247,7 +275,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
               <tr key={startDate}>
                 <td>{renderDateRange(startDate)}</td>
                 <td>
-                  {chartType === "PANEL CHART"  && !isAdmin ? (
+                  {!isAdmin ? (
                     renderPanelChartInput(dayResults.Mon)
                   ) : (
                     <input
@@ -288,82 +316,80 @@ const ResultTable: React.FC<ResultTableProps> = ({
                   )}
                 </td>
                 <td>
-                {chartType === "PANEL CHART"  && !isAdmin ? (
+                  {!isAdmin ? (
                     renderPanelChartInput(dayResults.Tue)
                   ) : (
-                  
-                  <input
-                    type="number"
-                    value={
-                      dayResults.Tue !== undefined
-                        ? chartType === "JODI CHART"
-                          ? addZeroPadding(dayResults.Tue, 2)
-                          : chartType === "PANEL CHART"
-                          ? addZeroPadding(dayResults.Tue, 8)
+                    <input
+                      type="number"
+                      value={
+                        dayResults.Tue !== undefined
+                          ? chartType === "JODI CHART"
+                            ? addZeroPadding(dayResults.Tue, 2)
+                            : chartType === "PANEL CHART"
+                            ? addZeroPadding(dayResults.Tue, 8)
+                            : ""
                           : ""
-                        : ""
-                    }
-                    onChange={(e) =>
-                      handleResultChange(
-                        startDate,
-                        "Tue",
-                        e.target.value !== ""
-                          ? parseInt(e.target.value, 10)
-                          : null
-                      )
-                    }
-                    disabled={!isAdmin}
-                    style={{
-                      fontSize: "30px",
-                      color:
-                        isJodiChart && /(\d)\1/.test(dayResults.Mon?.toString())
-                          ? "red"
-                          : "black",
-                    }}
-                  />
+                      }
+                      onChange={(e) =>
+                        handleResultChange(
+                          startDate,
+                          "Tue",
+                          e.target.value !== ""
+                            ? parseInt(e.target.value, 10)
+                            : null
+                        )
+                      }
+                      disabled={!isAdmin}
+                      style={{
+                        fontSize: "30px",
+                        color:
+                          isJodiChart &&
+                          /(\d)\1/.test(dayResults.Mon?.toString())
+                            ? "red"
+                            : "black",
+                      }}
+                    />
                   )}
                   {isAdmin && (
                     <button onClick={() => handleButtonClick(startDate, "Tue")}>
                       Get Value
                     </button>
                   )}
-                  
                 </td>
                 <td>
-           
-                  {chartType === "PANEL CHART"  && !isAdmin ? (
+                  {!isAdmin ? (
                     renderPanelChartInput(dayResults.Wed)
                   ) : (
-                  <input
-                    type="number"
-                    value={
-                      dayResults.Wed !== undefined
-                        ? chartType === "JODI CHART"
-                          ? addZeroPadding(dayResults.Wed, 2)
-                          : chartType === "PANEL CHART"
-                          ? addZeroPadding(dayResults.Wed, 8)
+                    <input
+                      type="number"
+                      value={
+                        dayResults.Wed !== undefined
+                          ? chartType === "JODI CHART"
+                            ? addZeroPadding(dayResults.Wed, 2)
+                            : chartType === "PANEL CHART"
+                            ? addZeroPadding(dayResults.Wed, 8)
+                            : ""
                           : ""
-                        : ""
-                    }
-                    onChange={(e) =>
-                      handleResultChange(
-                        startDate,
-                        "Wed",
-                        e.target.value !== ""
-                          ? parseInt(e.target.value, 10)
-                          : null
-                      )
-                    }
-                    disabled={!isAdmin}
-                    style={{
-                      fontSize: "30px",
-                      color:
-                        isJodiChart &&
-                        /(\d)\1/.test(dayResults.Wed?.toString() ?? "")
-                          ? "red"
-                          : "black",
-                    }}
-                  />
+                      }
+                      onChange={(e) =>
+                        handleResultChange(
+                          startDate,
+                          "Wed",
+                          e.target.value !== ""
+                            ? parseInt(e.target.value, 10)
+                            : null
+                        )
+                      }
+                      disabled={!isAdmin}
+                      style={{
+                        fontSize: "30px",
+                        color:
+                          isJodiChart &&
+                          /(\d)\1/.test(dayResults.Wed?.toString() ?? "")
+                            ? "red"
+                            : "black",
+                      }}
+                    />
                   )}
                   {isAdmin && (
                     <button onClick={() => handleButtonClick(startDate, "Wed")}>
@@ -372,39 +398,39 @@ const ResultTable: React.FC<ResultTableProps> = ({
                   )}
                 </td>
                 <td>
-                  {chartType === "PANEL CHART"  && !isAdmin ? (
+                  {!isAdmin ? (
                     renderPanelChartInput(dayResults.Thu)
                   ) : (
-                  <input
-                    type="number"
-                    value={
-                      dayResults.Thu !== undefined
-                        ? chartType === "JODI CHART"
-                          ? addZeroPadding(dayResults.Thu, 2)
-                          : chartType === "PANEL CHART"
-                          ? addZeroPadding(dayResults.Thu, 8)
+                    <input
+                      type="number"
+                      value={
+                        dayResults.Thu !== undefined
+                          ? chartType === "JODI CHART"
+                            ? addZeroPadding(dayResults.Thu, 2)
+                            : chartType === "PANEL CHART"
+                            ? addZeroPadding(dayResults.Thu, 8)
+                            : ""
                           : ""
-                        : ""
-                    }
-                    onChange={(e) =>
-                      handleResultChange(
-                        startDate,
-                        "Thu",
-                        e.target.value !== ""
-                          ? parseInt(e.target.value, 10)
-                          : null
-                      )
-                    }
-                    disabled={!isAdmin}
-                    style={{
-                      fontSize: "30px",
-                      color:
-                        isJodiChart &&
-                        /(\d)\1/.test(dayResults.Thu?.toString() ?? "")
-                          ? "red"
-                          : "black",
-                    }}
-                  />
+                      }
+                      onChange={(e) =>
+                        handleResultChange(
+                          startDate,
+                          "Thu",
+                          e.target.value !== ""
+                            ? parseInt(e.target.value, 10)
+                            : null
+                        )
+                      }
+                      disabled={!isAdmin}
+                      style={{
+                        fontSize: "30px",
+                        color:
+                          isJodiChart &&
+                          /(\d)\1/.test(dayResults.Thu?.toString() ?? "")
+                            ? "red"
+                            : "black",
+                      }}
+                    />
                   )}
                   {isAdmin && (
                     <button onClick={() => handleButtonClick(startDate, "Thu")}>
@@ -413,39 +439,39 @@ const ResultTable: React.FC<ResultTableProps> = ({
                   )}
                 </td>
                 <td>
-                  {chartType === "PANEL CHART"  && !isAdmin ? (
+                  {!isAdmin ? (
                     renderPanelChartInput(dayResults.Fri)
                   ) : (
-                  <input
-                    type="number"
-                    value={
-                      dayResults.Fri !== undefined
-                        ? chartType === "JODI CHART"
-                          ? addZeroPadding(dayResults.Fri, 2)
-                          : chartType === "PANEL CHART"
-                          ? addZeroPadding(dayResults.Fri, 8)
+                    <input
+                      type="number"
+                      value={
+                        dayResults.Fri !== undefined
+                          ? chartType === "JODI CHART"
+                            ? addZeroPadding(dayResults.Fri, 2)
+                            : chartType === "PANEL CHART"
+                            ? addZeroPadding(dayResults.Fri, 8)
+                            : ""
                           : ""
-                        : ""
-                    }
-                    onChange={(e) =>
-                      handleResultChange(
-                        startDate,
-                        "Fri",
-                        e.target.value !== ""
-                          ? parseInt(e.target.value, 10)
-                          : null
-                      )
-                    }
-                    disabled={!isAdmin}
-                    style={{
-                      fontSize: "30px",
-                      color:
-                        isJodiChart &&
-                        /(\d)\1/.test(dayResults.Fri?.toString() ?? "")
-                          ? "red"
-                          : "black",
-                    }}
-                  />
+                      }
+                      onChange={(e) =>
+                        handleResultChange(
+                          startDate,
+                          "Fri",
+                          e.target.value !== ""
+                            ? parseInt(e.target.value, 10)
+                            : null
+                        )
+                      }
+                      disabled={!isAdmin}
+                      style={{
+                        fontSize: "30px",
+                        color:
+                          isJodiChart &&
+                          /(\d)\1/.test(dayResults.Fri?.toString() ?? "")
+                            ? "red"
+                            : "black",
+                      }}
+                    />
                   )}
                   {isAdmin && (
                     <button onClick={() => handleButtonClick(startDate, "Fri")}>
@@ -454,39 +480,39 @@ const ResultTable: React.FC<ResultTableProps> = ({
                   )}
                 </td>
                 <td>
-                  {chartType === "PANEL CHART"  && !isAdmin ? (
+                  {!isAdmin ? (
                     renderPanelChartInput(dayResults.Sat)
                   ) : (
-                  <input
-                    type="number"
-                    value={
-                      dayResults.Sat !== undefined
-                        ? chartType === "JODI CHART"
-                          ? addZeroPadding(dayResults.Sat, 2)
-                          : chartType === "PANEL CHART"
-                          ? addZeroPadding(dayResults.Sat, 8)
+                    <input
+                      type="number"
+                      value={
+                        dayResults.Sat !== undefined
+                          ? chartType === "JODI CHART"
+                            ? addZeroPadding(dayResults.Sat, 2)
+                            : chartType === "PANEL CHART"
+                            ? addZeroPadding(dayResults.Sat, 8)
+                            : ""
                           : ""
-                        : ""
-                    }
-                    onChange={(e) =>
-                      handleResultChange(
-                        startDate,
-                        "Sat",
-                        e.target.value !== ""
-                          ? parseInt(e.target.value, 10)
-                          : null
-                      )
-                    }
-                    disabled={!isAdmin}
-                    style={{
-                      fontSize: "30px",
-                      color:
-                        isJodiChart &&
-                        /(\d)\1/.test(dayResults.Sat?.toString() ?? "")
-                          ? "red"
-                          : "black",
-                    }}
-                  />
+                      }
+                      onChange={(e) =>
+                        handleResultChange(
+                          startDate,
+                          "Sat",
+                          e.target.value !== ""
+                            ? parseInt(e.target.value, 10)
+                            : null
+                        )
+                      }
+                      disabled={!isAdmin}
+                      style={{
+                        fontSize: "30px",
+                        color:
+                          isJodiChart &&
+                          /(\d)\1/.test(dayResults.Sat?.toString() ?? "")
+                            ? "red"
+                            : "black",
+                      }}
+                    />
                   )}
                   {isAdmin && (
                     <button onClick={() => handleButtonClick(startDate, "Sat")}>
@@ -495,39 +521,39 @@ const ResultTable: React.FC<ResultTableProps> = ({
                   )}
                 </td>
                 <td>
-                  {chartType === "PANEL CHART"  && !isAdmin ? (
+                  {!isAdmin ? (
                     renderPanelChartInput(dayResults.Sun)
                   ) : (
-                  <input
-                    type="number"
-                    value={
-                      dayResults.Sun !== undefined
-                        ? chartType === "JODI CHART"
-                          ? addZeroPadding(dayResults.Sun, 2)
-                          : chartType === "PANEL CHART"
-                          ? addZeroPadding(dayResults.Sun, 8)
+                    <input
+                      type="number"
+                      value={
+                        dayResults.Sun !== undefined
+                          ? chartType === "JODI CHART"
+                            ? addZeroPadding(dayResults.Sun, 2)
+                            : chartType === "PANEL CHART"
+                            ? addZeroPadding(dayResults.Sun, 8)
+                            : ""
                           : ""
-                        : ""
-                    }
-                    onChange={(e) =>
-                      handleResultChange(
-                        startDate,
-                        "Sun",
-                        e.target.value !== ""
-                          ? parseInt(e.target.value, 10)
-                          : null
-                      )
-                    }
-                    disabled={!isAdmin}
-                    style={{
-                      fontSize: "30px",
-                      color:
-                        isJodiChart &&
-                        /(\d)\1/.test(dayResults.Sun?.toString() ?? "")
-                          ? "red"
-                          : "black",
-                    }}
-                  />
+                      }
+                      onChange={(e) =>
+                        handleResultChange(
+                          startDate,
+                          "Sun",
+                          e.target.value !== ""
+                            ? parseInt(e.target.value, 10)
+                            : null
+                        )
+                      }
+                      disabled={!isAdmin}
+                      style={{
+                        fontSize: "30px",
+                        color:
+                          isJodiChart &&
+                          /(\d)\1/.test(dayResults.Sun?.toString() ?? "")
+                            ? "red"
+                            : "black",
+                      }}
+                    />
                   )}
                   {isAdmin && (
                     <button onClick={() => handleButtonClick(startDate, "Sun")}>
