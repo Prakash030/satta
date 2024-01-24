@@ -21,9 +21,15 @@ function Login() {
     const formData = new FormData(event.currentTarget);
     const uname = (formData.get("uname") as string)+'@gmail.com';
     const pass = formData.get("pass") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
+
+    if (pass !== confirmPassword) {
+        setErrorMessages({ name: "pass", message: "Passwords do not match" });
+        return;
+      }
 
     try {
-      const response = await fetch("/api/authUser", {
+      const response = await fetch("/api/forgetPass", {
         method: "POST",
         body: new URLSearchParams({ email: uname, password: pass }), // Use URLSearchParams for form data
       });
@@ -64,15 +70,17 @@ function Login() {
           {renderErrorMessage("uname")}
         </div>
         <div className="input-container">
-          <label>Password </label>
+          <label>New Password </label>
           <input type="password" name="pass" required />
+          {renderErrorMessage("pass")}
+        </div>
+        <div className="input-container">
+          <label>Confirm Password </label>
+          <input type="password" name="confirmPassword" required />
           {renderErrorMessage("pass")}
         </div>
         <div className="button-container">
           <input type="submit" />
-        </div>
-        <div>
-          <Link href="/forgetPassword">Forget Password</Link>
         </div>
 
         <p className="mt-4 text-gray-600 text-center">
@@ -86,14 +94,12 @@ function Login() {
   return (
     <div className="app">
       <div className="login-form">
-        <div className="title">Log In your Account</div>
-        <p className="description">Step into the world of satta matka by logging into your account today</p>
-        <p className="description">Predict wisely, Join the game, and let the winning journey unlock!!!!!</p>
+        <div className="title">Recover your Account...</div>
         <div className="title">Enter Your Credentials!!!</div>
         {isSubmitted ? (
           <div>
-            User is successfully logged in
-            <Link href="/" className="linkDecor">Go TO DASHBOARD</Link>
+            Password is successfully changed
+            <Link href="/logIn" className="linkDecor">Go TO LOGIN</Link>
           </div>
         ) : (
           renderForm
