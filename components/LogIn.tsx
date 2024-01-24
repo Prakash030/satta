@@ -14,6 +14,7 @@ function Login() {
     message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -47,6 +48,9 @@ function Login() {
       setErrorMessages({ name: "uname", message: "Error authenticating user" });
     }
   };
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   // Generate JSX code for error message
   const renderErrorMessage = (name: string) =>
@@ -65,8 +69,18 @@ function Login() {
         </div>
         <div className="input-container">
           <label>Password </label>
-          <input type="password" name="pass" required />
+          <input type={showPassword ? "text" : "password"} name="pass" required />
           {renderErrorMessage("pass")}
+          <button
+          type="button"
+          onClick={togglePasswordVisibility}
+          style={{
+            display: "flex",
+            width: "25%",
+          }}
+        >
+          {showPassword ? "Hide" : "Show"} Password
+        </button>
         </div>
         <div className="button-container">
           <input type="submit" />

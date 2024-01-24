@@ -4,6 +4,11 @@ import "../styles.css";
 
 function SignIn() {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
  
     event.preventDefault();
@@ -42,6 +47,7 @@ function SignIn() {
       console.error("Error creating user:", error);
     }
   };
+  
 
   const renderForm = (
     <div className="form">
@@ -60,7 +66,17 @@ function SignIn() {
         </div> */}
         <div className="input-container">
           <label>Password </label>
-          <input type="password" name="pass" required />
+          <input type={showPassword ? "text" : "password"} name="pass" required />
+          <button
+          type="button"
+          onClick={togglePasswordVisibility}
+          style={{
+            display: "flex",
+            width: "25%",
+          }}
+        >
+          {showPassword ? "Hide" : "Show"} Password
+        </button>
         </div>
         <div className="button-container">
           <input type="submit" />
