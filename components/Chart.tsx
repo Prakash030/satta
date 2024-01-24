@@ -13,12 +13,12 @@ const Chart = ({gameName,chartType,isAdmin}:Props) => {
     <div className='bg table'>
         <div >
         <div style={{ marginTop: "20px" }}>
+        <div style={{ display: "flex", justifyContent: "center",marginTop:"30px" }}>
           <span
             style={{
               backgroundColor: "red",
               padding: "10px",
               borderRadius: "20%",
-              marginLeft: "44%",
               fontWeight: "bold",
               fontSize: "30px",
               color: "white",
@@ -29,6 +29,7 @@ const Chart = ({gameName,chartType,isAdmin}:Props) => {
           >
            {chartType}
           </span>
+        </div>
           <div style={{ display: "flex", justifyContent: "center",marginTop:"30px" }}>
            
             <span
@@ -59,7 +60,9 @@ const Chart = ({gameName,chartType,isAdmin}:Props) => {
           background: "#333",
         }}
       ></div>
-      <ResultTable isAdmin={isAdmin} chartType={chartType} gameName={gameName}/>
+     <div style={{}}>
+     <ResultTable isAdmin={isAdmin} chartType={chartType} gameName={gameName} />
+     </div>
       
     </div>
   )
