@@ -165,7 +165,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
               alignItems: "center",
               fontSize: "30px",
               marginInline: "5px",
-              color: valueString[2] === valueString[3] && chartType == 'JODI CHART' ? "red" : "inherit",
+              color: Number(valueString[3]) === Number(valueString[4])  ? "red" : "inherit",
             }}
           >
             {valueString.substring(3, 5)}
@@ -254,7 +254,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
   };
 
   return (
-    <div style={{ display:"flex",justifyContent:"center",overflow:"auto" }}>
+    <div style={{overflow:"auto" }}>
       <table border="1" className="bg">
         <thead>
           <tr style={{ fontSize: "20px" }}>
