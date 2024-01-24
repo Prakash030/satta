@@ -48,7 +48,7 @@ const isPlayButtonEnabled = (gameTiming: string): boolean => {
   );
 
   // Check if end time is "12:00 AM" or "12:05 AM" (midnight) and consider it as available all day
-  if (endHour === '12' && endMinute === '05' || endMinute === '15' && endPeriod.toLowerCase() === 'am') {
+  if (endHour === '12' && (endMinute === '05' || endMinute === '15') && endPeriod.toLowerCase() === 'am') {
 
     return true;
   }
