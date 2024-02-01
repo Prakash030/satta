@@ -178,7 +178,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
               alignItems: "center",
               fontSize: "30px",
               marginInline: "5px",
-              color: Number(valueString[0]) === Number(valueString[1])  ? "red" : "inherit",
+              color: Number(valueString[6]) === Number(valueString[7])  ? "red" : "inherit",
             }}
           >
            {!isNaN(Number(valueString.substring(6, 9))) ? valueString.substring(6, 9) : ''}
