@@ -158,7 +158,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
             </div>
           )}
 
-          <div
+          {chartType == 'PANEL CHART' ? <div
             style={{
               display: "flex",
               flexDirection: "row",
@@ -170,6 +170,22 @@ const ResultTable: React.FC<ResultTableProps> = ({
           >
             {valueString.substring(3, 5)}
           </div>
+          :
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              fontSize: "30px",
+              marginInline: "5px",
+              color: Number(valueString[0]) === Number(valueString[1])  ? "red" : "inherit",
+            }}
+          >
+           {!isNaN(Number(valueString.substring(6, 9))) ? valueString.substring(6, 9) : ''}
+          </div>
+          
+
+          }
 
           {chartType == "PANEL CHART" && (
             <div
