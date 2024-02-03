@@ -141,7 +141,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
     return (
       <>
         <div style={{ display: "flex", padding: "5px", marginInline: "5px" }}>
-          {chartType == "PANEL CHART" && (
+          {chartType == "PANEL CHART" && !isNaN(Number(valueString.substring(6, 9))) && (
             <div
               style={{
                 display: "flex",
@@ -158,7 +158,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
             </div>
           )}
 
-          {chartType == 'PANEL CHART' ? <div
+          {chartType == 'PANEL CHART' && !isNaN(Number(valueString.substring(6, 9))) ? <div
             style={{
               display: "flex",
               flexDirection: "row",
@@ -187,7 +187,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
 
           }
 
-          {chartType == "PANEL CHART" && (
+          {chartType == "PANEL CHART" && !isNaN(Number(valueString.substring(6, 9))) && (
             <div
               style={{
                 display: "flex",
