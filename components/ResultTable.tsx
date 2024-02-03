@@ -77,6 +77,37 @@ const ResultTable: React.FC<ResultTableProps> = ({
     fetchResults();
   }, [gameName, chartType]);
 
+  const [fontSize, setFontSize] = useState("30px");
+  const [fontSizeSmall,setFontSizeSmall] = useState("10px");
+  const [marginInline, setMarginInline] = useState("5px");
+  const [paddingInline, setPaddingInline] = useState("5px");
+
+  useEffect(() => {
+    const updateFontSize = () => {
+      // Set the initial value to 30px and change it to 10px for mobile view (width <= 600px)
+      const newFontSize = window.innerWidth <= 600 ? "10px" : "30px";
+      const newSmallFontSize = window.innerWidth <= 600 ? "5px" : "10px";
+      const newMarginInline = window.innerWidth <= 600 ? "2px" : "5px";
+      const newPaddingInline = window.innerWidth <= 600 ? "2px" : "5px";
+
+      setFontSizeSmall(newSmallFontSize);
+      setFontSize(newFontSize);
+      setMarginInline(newMarginInline);
+      setPaddingInline(newPaddingInline);
+    };
+
+    // Call the function initially to set the correct fontSize based on the initial screen width
+    updateFontSize();
+
+    // Add event listener for resizing the window
+    window.addEventListener("resize", updateFontSize);
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("resize", updateFontSize);
+    };
+  }, []); // Empty dependency array to only run the effect once
+
   const generateInitialResults = (
     startDate: string,
     endDate: string,
@@ -112,7 +143,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
     generateInitialResults(formatDate(lastTwoMonths), formatDate(today), 7)
   );
 
-  console.log("results", results);
+  // console.log("results", results);
 
   const handleResultChange = (
     date: string,
@@ -140,69 +171,81 @@ const ResultTable: React.FC<ResultTableProps> = ({
 
     return (
       <>
-        <div style={{ display: "flex", padding: "5px", marginInline: "5px" }}>
-          {chartType == "PANEL CHART" && !isNaN(Number(valueString.substring(6, 9))) && (
+        <div style={{ display: "flex",  padding: paddingInline, marginInline: marginInline}}>
+          {chartType == "PANEL CHART" &&
+            !isNaN(Number(valueString.substring(6, 9))) && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                 marginInline: marginInline,
+                  fontSize: fontSizeSmall,
+                }}
+              >
+                {valueString
+                  .substring(0, 3)
+                  .split("")
+                  .map((digit, index) => (
+                    <div key={index}>{digit}</div>
+                  ))}
+              </div>
+            )}
+
+          {chartType == "PANEL CHART" &&
+          !isNaN(Number(valueString.substring(6, 9))) ? (
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                marginInline: "5px",
+                flexDirection: "row",
+                alignItems: "center",
+                fontSize: fontSize,
+               marginInline: marginInline,
+                color:
+                  Number(valueString[3]) === Number(valueString[4])
+                    ? "red"
+                    : "inherit",
               }}
             >
-              {valueString
-                .substring(0, 3)
-                .split("")
-                .map((digit, index) => (
-                  <div key={index}>{digit}</div>
-                ))}
-            </div>
-          )}
-
-          {chartType == 'PANEL CHART' && !isNaN(Number(valueString.substring(6, 9))) ? <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              fontSize: "30px",
-              marginInline: "5px",
-              color: Number(valueString[3]) === Number(valueString[4])  ? "red" : "inherit",
-            }}
-          >
-            {valueString.substring(3, 5)}
-          </div>
-          :
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              fontSize: "30px",
-              marginInline: "5px",
-              color: Number(valueString[6]) === Number(valueString[7])  ? "red" : "inherit",
-            }}
-          >
-           {!isNaN(Number(valueString.substring(6, 9))) ? valueString.substring(6, 9) : ''}
-          </div>
-          
-
-          }
-
-          {chartType == "PANEL CHART" && !isNaN(Number(valueString.substring(6, 9))) && (
+              {valueString.substring(3, 5)}
+                          </div>
+          ) : (
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                marginInline: "5px",
+                flexDirection: "row",
+                alignItems: "center",
+                fontSize: fontSize,
+               marginInline: marginInline,
+                color:
+                  Number(valueString[6]) === Number(valueString[7])
+                    ? "red"
+                    : "inherit",
               }}
             >
-              {valueString
-                .substring(5)
-                .split("")
-                .map((digit, index) => (
-                  <div key={index}>{digit}</div>
-                ))}
+              {!isNaN(Number(valueString.substring(6, 9)))
+                ? valueString.substring(6, 9)
+                : ""}
             </div>
           )}
+
+          {chartType == "PANEL CHART" &&
+            !isNaN(Number(valueString.substring(6, 9))) && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                 marginInline: marginInline,
+                  fontSize: fontSizeSmall,
+                }}
+              >
+                {valueString
+                  .substring(5)
+                  .split("")
+                  .map((digit, index) => (
+                    <div key={index}>{digit}</div>
+                  ))}
+              </div>
+            )}
         </div>
       </>
     );
@@ -251,9 +294,9 @@ const ResultTable: React.FC<ResultTableProps> = ({
         throw new Error(data.error || "Failed to update table");
       }
 
-      console.log("Table Updated successfully!");
+      alert("Table Updated successfully!");
     } catch (error) {
-      console.error("Error Updating Table:", error);
+      alert("Error Updating Table:", error);
     }
   };
 
@@ -270,10 +313,10 @@ const ResultTable: React.FC<ResultTableProps> = ({
   };
 
   return (
-    <div style={{overflow:"auto" }}>
+    <div style={{ overflow: "auto" }}>
       <table border="1" className="bg">
         <thead>
-          <tr style={{ fontSize: "20px" }}>
+          <tr style={{ fontSize: fontSize,}}>
             <th>Date Range</th>
             <th>Mon</th>
             <th>Tue</th>
@@ -289,7 +332,13 @@ const ResultTable: React.FC<ResultTableProps> = ({
             .reverse()
             .map(([startDate, { dayOfWeek, results: dayResults }]) => (
               <tr key={startDate}>
-                <td>{renderDateRange(startDate)}</td>
+                <td
+                  style={{
+                    fontSize: fontSize,
+                  }}
+                >
+                  {renderDateRange(startDate)}
+                </td>
                 <td>
                   {!isAdmin ? (
                     renderPanelChartInput(dayResults.Mon)
@@ -316,7 +365,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                       }
                       disabled={!isAdmin}
                       style={{
-                        fontSize: "30px",
+                        fontSize: fontSize,
                         color:
                           isJodiChart &&
                           /(\d)\1/.test(String(dayResults?.Mon) ?? "")
@@ -357,7 +406,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                       }
                       disabled={!isAdmin}
                       style={{
-                        fontSize: "30px",
+                        fontSize: fontSize,
                         color:
                           isJodiChart &&
                           /(\d)\1/.test(dayResults.Mon?.toString())
@@ -398,7 +447,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                       }
                       disabled={!isAdmin}
                       style={{
-                        fontSize: "30px",
+                        fontSize: fontSize,
                         color:
                           isJodiChart &&
                           /(\d)\1/.test(dayResults.Wed?.toString() ?? "")
@@ -439,7 +488,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                       }
                       disabled={!isAdmin}
                       style={{
-                        fontSize: "30px",
+                        fontSize: fontSize,
                         color:
                           isJodiChart &&
                           /(\d)\1/.test(dayResults.Thu?.toString() ?? "")
@@ -480,7 +529,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                       }
                       disabled={!isAdmin}
                       style={{
-                        fontSize: "30px",
+                        fontSize: fontSize,
                         color:
                           isJodiChart &&
                           /(\d)\1/.test(dayResults.Fri?.toString() ?? "")
@@ -521,7 +570,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                       }
                       disabled={!isAdmin}
                       style={{
-                        fontSize: "30px",
+                        fontSize: fontSize,
                         color:
                           isJodiChart &&
                           /(\d)\1/.test(dayResults.Sat?.toString() ?? "")
@@ -562,7 +611,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                       }
                       disabled={!isAdmin}
                       style={{
-                        fontSize: "30px",
+                        fontSize: fontSize,
                         color:
                           isJodiChart &&
                           /(\d)\1/.test(dayResults.Sun?.toString() ?? "")
