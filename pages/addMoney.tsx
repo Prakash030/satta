@@ -42,38 +42,39 @@ function AddMoney() {
       }
       , [clientRender]);
 
-      const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const amount = parseInt((event.target as any).amount.value);
-        const formData = {
-          amount,
-          status: "pending",
-          email: email,
-          date: new Date().toLocaleString(),
-          utrNo: (event.target as any).utrNo.value,
-        };
-        console.log(formData);
-        try {
-          
-          const response = await fetch('/api/addMoney', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData), // Sending form data in the request body
-          });
+        const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+          event.preventDefault();
+          const amount = parseInt((event.target as any).amount.value);
+          const formData = {
+            amount,
+            status: "pending",
+            email: email,
+            date: new Date().toLocaleString(),
+            // utrNo: (event.target as any).utrNo.value,
+          };
+          console.log(formData);
+          try {
+            
+            const response = await fetch('/api/addMoney', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData), // Sending form data in the request body
+            });
+        
+            if (!response.ok) {
+              const data = await response.json();
+              throw new Error(data.error || "Failed to Update Details");
+            }
+            window.location.href = 'upi://pay?pa=rrsattamatta@ybl&am=1';
       
-          if (!response.ok) {
-            const data = await response.json();
-            throw new Error(data.error || "Failed to Update Details");
+            alert("Add Money request sent successfully!");
+      
+          } catch (error) {
+            console.error('Error updating withdrawal details:', error);
           }
-    
-          alert("Add Money request sent successfully!");
-    
-        } catch (error) {
-          console.error('Error updating withdrawal details:', error);
         }
-      }
     
 
   return (
@@ -81,8 +82,8 @@ function AddMoney() {
         <div className="login-form wallet">
             <div>
             <h3>Add Money to your wallet!!!</h3>
-            <p>Money will be deposited within 24 hours!!!</p>
-            <img src="/qr2.jpeg" alt="" height={320}/>
+            {/* <p>Money will be deposited within 24 hours!!!</p>
+            <img src="/qr2.jpeg" alt="" height={320}/> */}
             </div>
         
         <div>
@@ -92,10 +93,10 @@ function AddMoney() {
                     <label>Amount </label>
                     <input type="number" name="amount" required placeholder='Enter the amount'/>
                 </div>
-                <div className="input-container">
+                {/* <div className="input-container">
                     <label>Transaction Id </label>
                     <input type="text" name="utrNo" required placeholder='Enter the transaction Id'/>
-                </div>
+                </div> */}
                 <div className="button-container">
                     <input type="submit" />
                 </div>
