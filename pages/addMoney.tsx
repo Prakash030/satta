@@ -67,7 +67,7 @@ function AddMoney() {
               const data = await response.json();
               throw new Error(data.error || "Failed to Update Details");
             }
-            window.location.href = 'upi://pay?pa=rrsattamatta@ybl&am=1';
+            window.location.href = `upi://pay?pa=rrsattamatta@ybl&am=${amount}`;
       
             alert("Add Money request sent successfully!");
       
