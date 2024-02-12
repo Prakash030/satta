@@ -58,7 +58,7 @@ const WalletButtonsWithImage = () => {
   const renderButtons = (
     <div className="flex justify-between text-3xl bg-yellow-200 h-20">
       {/* Use dynamic import for client-side components */}
-      <Link href="/addMoney" className="bg-red-800 hover:bg-blue-700 text-white font-bold  px-4 rounded-full m-2 pt-4 button">
+      <Link href="upi://pay?pa=rrsattamatta@ybl&pn=Dagad Sai&mc=0000&mode=02&purpose=00" className="bg-red-800 hover:bg-blue-700 text-white font-bold  px-4 rounded-full m-2 pt-4 button">
         <button>
           Add To Wallet
         </button>
