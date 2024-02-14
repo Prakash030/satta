@@ -82,8 +82,8 @@ function AddMoney() {
         <div className="login-form wallet">
             <div>
             <h3>Add Money to your wallet!!!</h3>
-            {/* <p>Money will be deposited within 24 hours!!!</p>
-            <img src="/qr2.jpeg" alt="" height={320}/> */}
+            <p>Money will be deposited within 24 hours!!!</p>
+            <img src="/qr2.jpeg" alt="" height={320}/>
             </div>
         
         <div>
