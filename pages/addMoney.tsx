@@ -98,7 +98,7 @@ function AddMoney() {
                     <input type="text" name="utrNo" required placeholder='Enter the transaction Id'/>
                 </div> */}
                 <div className="button-container">
-                    <input type="submit" />
+                    <input type="submit" style={{marginBottom:"20px"}}/>
                 </div>
             </form>
             </div>
