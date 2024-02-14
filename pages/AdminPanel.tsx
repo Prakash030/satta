@@ -42,6 +42,11 @@ function AdminPanel() {
   //   }
   // }, [role]);
 
+  interface GameResult {
+    gameName: string;
+    gameNumber: string;
+  }
+
   const games = [
     "MILAN_MORNING",
     "SIVAJI",
@@ -60,26 +65,54 @@ function AdminPanel() {
     "MAHARANI_NIGHT",
   ];
 
-  // const handleVerify = async () => {
-  //   try {
-  //     const response = await fetch(`/api/verifyResult`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
+  const [gameResults, setGameResults] = useState<{ [gameName: string]: string }>({});
 
-  //     if (!response.ok) {
-  //       const data = await response.json();
-  //       throw new Error(data.error || "Failed to get game data");
-  //     }
+  useEffect(() => {
+    const fetchResults = async () => {
+      // console.log("yes, I am called");
+      try {
+        const response = await fetch(`/api/getResult`, {
+          method: "GET",
+        });
 
-  //     console.log("Check done!!!!");
-  //     alert("Check done!!!!");
-  //   } catch (error) {
-  //     console.error("Error getting game data:", error);
-  //   }
-  // };
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || "Failed to get game data");
+        }
+
+        const resultData = await response.json();
+        // console.log("resultData", resultData.result);
+
+        // Convert the result object into an array
+        const resultArray: GameResult[] = Object.entries(resultData.result).map(
+          ([gameName, gameNumber]) => ({
+            gameName,
+            gameNumber: gameNumber as string,
+          })
+        );
+
+        // Map from the 2nd element to the 3rd last element
+        const mappedResults = resultArray.slice(1, -3);
+
+        // Convert the array of objects to an object with game names as keys
+        const newGameResults = mappedResults.reduce((acc, { gameName, gameNumber }) => {
+          acc[gameName] = gameNumber;
+          return acc;
+        }, {} as { [gameName: string]: string });
+
+        setGameResults(newGameResults);
+      } catch (error) {
+        console.error("Error getting game data:", error);
+      }
+    };
+
+    
+
+    fetchResults();
+
+   
+  }, []);
+
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -113,22 +146,32 @@ function AdminPanel() {
     }
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, game: string) => {
+    const value = event.target.value;
+    setGameResults((prevResults) => ({
+      ...prevResults,
+      [game]: value,
+    }));
+  };
+  
+
   const renderForm = (
     <div className="form">
       <form onSubmit={handleSubmit}>
-        {games.map((game, index) => (
+        {Object.entries(gameResults).map(([game, result], index) => (
           <div className="input-container" key={index}>
             <label>{game}</label>
-            <input type="text" name={game} />
+            <input type="text" name={game} value={result} onChange={(e) => handleInputChange(e, game)} />
           </div>
         ))}
-
+  
         <div className="button-container">
           <input type="submit" />
         </div>
       </form>
     </div>
   );
+  
 
   return (
     <div className="app">

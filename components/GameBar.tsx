@@ -16,7 +16,11 @@ interface Props {
   gameTiming: string;
 }
 
-const isPlayButtonEnabled = (gameTiming: string): boolean => {
+const isPlayButtonEnabled = (gameTiming: string,gameNumber: string): boolean => {
+  // console.log("game number", gameNumber);
+  if(gameNumber === '|||-||-|||'){
+    return false;
+  }
   const matchResult = gameTiming.match(
     /(\d+):(\d+)\s(AM|PM)\sto\s(\d+):(\d+)\s(AM|PM)/i
   );
@@ -111,10 +115,10 @@ const GameBar = ({ gameName, gameNumber, gameTiming }: Props) => {
     },
     "MILAN_DAY": {
       fullName: "Milan Day",
-      openBidStart: "2:15 pm",
-      openBidEnd: "4:15 pm",
-      closeBidStart: "2:15 pm",
-      closeBidEnd: "4:15 pm",
+      openBidStart: "2:55 pm",
+      openBidEnd: "3:55 pm",
+      closeBidStart: "2:55 pm",
+      closeBidEnd: "3:55 pm",
     },
     "KALYAN": {
       fullName: "Kalyan",
@@ -176,7 +180,7 @@ const GameBar = ({ gameName, gameNumber, gameTiming }: Props) => {
 
 
   const customGames = ["SIVAJI", "SIVA", "SIVAJI_NIGHT"];
-  const isButtonEnabled = isPlayButtonEnabled(gameTiming);
+  const isButtonEnabled = isPlayButtonEnabled(gameTiming, gameNumber);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
