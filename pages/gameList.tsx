@@ -14,6 +14,29 @@ import "../styles.css";
 
 const GameList = () => {
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/getUser`, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          console.error("Error fetching user data:");
+          window.location.href = "/";
+          return;
+        }
+
+      } catch (error) {
+        console.error("Error handling result fetch:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
   const router = useRouter();
   const { gameName,gameTiming,isDisabled } = router.query;
 
