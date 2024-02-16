@@ -65,7 +65,25 @@ function AdminPanel() {
     "MAHARANI_NIGHT",
   ];
 
-  const [gameResults, setGameResults] = useState<{ [gameName: string]: string }>({});
+  const [gameResults, setGameResults] = useState<{
+    [gameName: string]: string;
+  }>({
+    ["MILAN_MORNING"]: "",
+    ["SIVAJI"]: "",
+    ["KALYAN_MORNING"]: "",
+    ["SRIDEVI"]: "",
+    ["SIVA"]: "",
+    ["MADHUR_DAY"]: "",
+    ["MILAN_DAY"]: "",
+    ["KALYAN"]: "",
+    ["MAHARANI_DAY"]: "",
+    ["SIVAJI_NIGHT"]: "",
+    ["SRIDEVI_NIGHT"]: "",
+    ["MADHUR_NIGHT"]: "",
+    ["MILAN_NIGHT"]: "",
+    ["MAIN_BAJAR"]: "",
+    ["MAHARANI_NIGHT"]: "",
+  });
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -95,10 +113,13 @@ function AdminPanel() {
         const mappedResults = resultArray.slice(1, -3);
 
         // Convert the array of objects to an object with game names as keys
-        const newGameResults = mappedResults.reduce((acc, { gameName, gameNumber }) => {
-          acc[gameName] = gameNumber;
-          return acc;
-        }, {} as { [gameName: string]: string });
+        const newGameResults = mappedResults.reduce(
+          (acc, { gameName, gameNumber }) => {
+            acc[gameName] = gameNumber;
+            return acc;
+          },
+          {} as { [gameName: string]: string }
+        );
 
         setGameResults(newGameResults);
       } catch (error) {
@@ -106,13 +127,8 @@ function AdminPanel() {
       }
     };
 
-    
-
     fetchResults();
-
-   
   }, []);
-
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -146,14 +162,16 @@ function AdminPanel() {
     }
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, game: string) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    game: string
+  ) => {
     const value = event.target.value;
     setGameResults((prevResults) => ({
       ...prevResults,
       [game]: value,
     }));
   };
-  
 
   const renderForm = (
     <div className="form">
@@ -161,24 +179,28 @@ function AdminPanel() {
         {Object.entries(gameResults).map(([game, result], index) => (
           <div className="input-container" key={index}>
             <label>{game}</label>
-            <input type="text" name={game} value={result} onChange={(e) => handleInputChange(e, game)} />
+            <input
+              type="text"
+              name={game}
+              value={result}
+              onChange={(e) => handleInputChange(e, game)}
+            />
           </div>
         ))}
-  
+
         <div className="button-container">
           <input type="submit" />
         </div>
       </form>
     </div>
   );
-  
 
   return (
     <div className="app">
       <div className="login-form" style={{ overflow: "scroll" }}>
         <div className="title">Results</div>
         {renderForm}
-{/*         <div>
+        {/*         <div>
           <button onClick={handleVerify}>Check</button>
         </div> */}
       </div>
