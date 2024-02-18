@@ -24,7 +24,7 @@ const GameList = () => {
 
         if (!response.ok) {
           console.error("Error fetching user data:");
-          window.location.href = "/";
+          window.location.href = "/login";
           return;
         }
 
