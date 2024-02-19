@@ -216,7 +216,7 @@ export default function HomePage() {
           </div>
           <div>
             <button style={{background:"green", padding:"20px", borderRadius:"5px"}}>
-              <a href="https://www.dropbox.com/scl/fi/bbm1umg9iawkmvglupb5q/sarkar.apk?rlkey=gzhcjd5kbnyq23xcwpozc0e8e&dl=1">Download The Application</a>
+              <a href="https://drive.google.com/uc?export=download&id=1XiwC-nkC0Ov-BujYx5t5c4ofh6ybHF6v">Download The Application</a>
             </button>
           </div>
         </div>
