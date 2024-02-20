@@ -59,7 +59,7 @@ const WalletButtonsWithImage = () => {
     <div className="flex justify-between text-3xl bg-yellow-200 h-20">
       {/* Use dynamic import for client-side components */}
       <Link href="/addMoney" className="bg-red-800 hover:bg-blue-700 text-white font-bold  px-4 rounded-full m-2 pt-4 button">
-        <button disabled={true}>
+        <button >
           Add To Wallet
         </button>
       </Link>
@@ -95,7 +95,7 @@ const WalletButtonsWithImage = () => {
         <div className="flex justify-between text-3xl bg-yellow-200 h-20">
           {/* Use dynamic import for client-side components */}
           {/* <Link href="https://forms.gle/9umyNHsy4SMDdxrF6" className="bg-red-800 hover:bg-blue-700 text-white font-bold  px-4 rounded-full m-2 pt-4"> */}
-          <button disabled={true} className="bg-red-800 hover:bg-blue-700 text-white font-bold  px-4 rounded-full m-2 pt-4 button" onClick={() => alert("Login to add money to your wallet")}>
+          <button className="bg-red-800 hover:bg-blue-700 text-white font-bold  px-4 rounded-full m-2 pt-4 button" onClick={() => alert("Login to add money to your wallet")}>
             Add To Wallet
           </button>
           {/* </Link> */}
