@@ -116,9 +116,9 @@ const GameBar = ({ gameName, gameNumber, gameTiming }: Props) => {
     "MILAN_DAY": {
       fullName: "Milan Day",
       openBidStart: "2:55 pm",
-      openBidEnd: "3:55 pm",
+      openBidEnd: "4:55 pm",
       closeBidStart: "3:00 pm",
-      closeBidEnd: "4:00 pm",
+      closeBidEnd: "5:00 pm",
     },
     "KALYAN": {
       fullName: "Kalyan",
