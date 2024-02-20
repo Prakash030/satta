@@ -204,6 +204,25 @@ export default function HomePage() {
           Copying/Promoting/Publishing Any of Our Content in Any Type Of Media
           or Other Source is Illegal and against Law.
         </p>
+
+        <div className="download">
+          <div >
+            <img src="/downloadAPp.jpg" alt="" height={300} width={300}/>
+          </div>
+          <div style={{
+            fontSize:"30px"
+          }}>
+            Click on the Download button to <br /> download the <span style={{color:"green"}}> Android Application </span>
+          </div>
+          <div>
+            <button style={{background:"green", padding:"20px", borderRadius:"5px", marginBottom: "10px"}}>
+              <a href="https://drive.google.com/uc?export=download&id=1DUdjEzouKqkaHF5Us6avpyLZfMsRugAV">Download The Application</a>
+            </button>
+            <button style={{background:"black", padding:"16px", borderRadius:"5px", color:"white"}}>
+              <a href="https://jmp.sh/o9h6FjJh">Watch Video</a>
+            </button>
+          </div>
+        </div>
         <Image
           src="/bottomBar.jpeg"
           width={2000}
