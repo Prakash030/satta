@@ -346,8 +346,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                     fontSize: fontSize,
                   }}
                 >
-                  {startDate}
-                  {/* {renderDateRange(startDate)} */}
+                  {renderDateRange(startDate)}
                 </td>
                 <td>
                   {!isAdmin ? (
