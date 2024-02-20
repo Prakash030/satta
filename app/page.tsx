@@ -215,8 +215,11 @@ export default function HomePage() {
             Click on the Download button to <br /> download the <span style={{color:"green"}}> Android Application </span>
           </div>
           <div>
-            <button style={{background:"green", padding:"20px", borderRadius:"5px"}}>
+            <button style={{background:"green", padding:"20px", borderRadius:"5px", marginBottom: "10px"}}>
               <a href="https://drive.google.com/uc?export=download&id=1XiwC-nkC0Ov-BujYx5t5c4ofh6ybHF6v">Download The Application</a>
+            </button>
+            <button style={{background:"black", padding:"16px", borderRadius:"5px", color:"white"}}>
+              <a href="https://jmp.sh/o9h6FjJh">Watch Video</a>
             </button>
           </div>
         </div>
