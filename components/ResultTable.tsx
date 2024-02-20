@@ -44,7 +44,9 @@ const ResultTable: React.FC<ResultTableProps> = ({
         }
 
         const resultData = await response.json();
-        // console.log("resultData", resultData.table);
+        if(gameName == "SIVAJI" && chartType == "JODI CHART"){
+        console.log("resultData", resultData.table);
+        }
 
         // Convert the resultData array to the ResultsMap structure
         const formattedResults: ResultsMap = {};
@@ -78,7 +80,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
   }, [gameName, chartType]);
 
   const [fontSize, setFontSize] = useState("30px");
-  const [fontSizeSmall,setFontSizeSmall] = useState("10px");
+  const [fontSizeSmall, setFontSizeSmall] = useState("10px");
   const [marginInline, setMarginInline] = useState("5px");
   const [paddingInline, setPaddingInline] = useState("5px");
 
@@ -171,14 +173,20 @@ const ResultTable: React.FC<ResultTableProps> = ({
 
     return (
       <>
-        <div style={{ display: "flex",  padding: paddingInline, marginInline: marginInline}}>
+        <div
+          style={{
+            display: "flex",
+            padding: paddingInline,
+            marginInline: marginInline,
+          }}
+        >
           {chartType == "PANEL CHART" &&
             !isNaN(Number(valueString.substring(6, 9))) && (
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                 marginInline: marginInline,
+                  marginInline: marginInline,
                   fontSize: fontSizeSmall,
                 }}
               >
@@ -199,7 +207,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                 flexDirection: "row",
                 alignItems: "center",
                 fontSize: fontSize,
-               marginInline: marginInline,
+                marginInline: marginInline,
                 color:
                   Number(valueString[3]) === Number(valueString[4])
                     ? "red"
@@ -207,7 +215,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
               }}
             >
               {valueString.substring(3, 5)}
-                          </div>
+            </div>
           ) : (
             <div
               style={{
@@ -215,7 +223,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                 flexDirection: "row",
                 alignItems: "center",
                 fontSize: fontSize,
-               marginInline: marginInline,
+                marginInline: marginInline,
                 color:
                   Number(valueString[6]) === Number(valueString[7])
                     ? "red"
@@ -234,7 +242,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                 marginInline: marginInline,
+                  marginInline: marginInline,
                   fontSize: fontSizeSmall,
                 }}
               >
@@ -255,7 +263,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
     if (num === undefined) {
       return "";
     }
-    console.log("num", num);
+    // console.log("num", num);
     const numString = num?.toString();
     const currentLength = numString?.length;
 
@@ -316,7 +324,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
     <div style={{ overflow: "auto" }}>
       <table border="1" className="bg">
         <thead>
-          <tr style={{ fontSize: fontSize,}}>
+          <tr style={{ fontSize: fontSize }}>
             <th>Date Range</th>
             <th>Mon</th>
             <th>Tue</th>
@@ -328,6 +336,7 @@ const ResultTable: React.FC<ResultTableProps> = ({
           </tr>
         </thead>
         <tbody>
+          
           {Object.entries(results)
             .reverse()
             .map(([startDate, { dayOfWeek, results: dayResults }]) => (
@@ -337,7 +346,8 @@ const ResultTable: React.FC<ResultTableProps> = ({
                     fontSize: fontSize,
                   }}
                 >
-                  {renderDateRange(startDate)}
+                  {startDate}
+                  {/* {renderDateRange(startDate)} */}
                 </td>
                 <td>
                   {!isAdmin ? (
