@@ -83,7 +83,7 @@ function AddMoney() {
             <div>
             <h3>Add Money to your wallet!!!</h3>
             <p>Money will be deposited within 24 hours!!!</p>
-            <img src="/qr2.jpeg" alt="" height={320}/>
+            <img src="/qr3.jpeg" alt="" height={320}/>
             </div>
         
         <div>
